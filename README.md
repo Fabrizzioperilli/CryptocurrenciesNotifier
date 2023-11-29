@@ -12,7 +12,7 @@ El proyecto consiste en una aplicación de escritorio desarrollada en Java que p
 Para instalar el proyecto, se debe clonar el repositorio y ejecutar el siguiente comando:
 
 ```bash
-git clone 
+git clone git@github.com:Fabrizzioperilli/CryptoNotifier.git
 ```
 ---
 
