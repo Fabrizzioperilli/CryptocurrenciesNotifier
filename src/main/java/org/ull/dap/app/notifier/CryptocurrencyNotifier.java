@@ -3,6 +3,7 @@ package org.ull.dap.app.notifier;
 import org.ull.dap.app.connections.CryptocurrencyAPI;
 import org.ull.dap.app.connections.IConnectionAPI;
 import org.ull.dap.app.enitity.Asset;
+import org.ull.dap.app.gui.VentanaNotificacion;
 import org.ull.dap.app.user.IObserver;
 import org.ull.dap.app.user.User;
 
@@ -50,7 +51,9 @@ public class CryptocurrencyNotifier implements Observable {
 
     @Override
     public void notifyObservers() {
+        VentanaNotificacion v;
         for (IObserver observer : observers) {
+            v = new VentanaNotificacion();
             Map<String, Double> cryptoPrices = ((User) observer).getCryptoPrices();
             for (Asset asset : assets) {
                 String assetId = asset.getData().getId();
@@ -60,7 +63,8 @@ public class CryptocurrencyNotifier implements Observable {
                     Double currentPrice = asset.getData().getPriceUsd();
 
                     if (!Objects.equals(previousPrice, currentPrice)) {
-                        observer.update(assetId, currentPrice);
+                        observer.update(assetId, currentPrice, v);
+                        v.setVisible(true);
                         cryptoPrices.put(assetId, currentPrice);
                     }
                 }
