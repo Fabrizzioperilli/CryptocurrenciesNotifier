@@ -80,7 +80,14 @@ public class VentanaPrincipal extends JFrame {
             btnLogin = new JButton("Login");
             btnLogin.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    pasarSiguientePestaña();
+                    if (!getChckbxUser1().isSelected() &&
+                            !getChckbxUser3().isSelected() &&
+                            !getChckbxUser2().isSelected()){
+                        JOptionPane.showMessageDialog(null, "Debes seleccionar al menos una cuenta");
+                    }else{
+                        pasarSiguientePestaña();
+                    }
+
                 }
             });
             btnLogin.setBackground(new Color(0, 255, 0));
@@ -290,12 +297,25 @@ public class VentanaPrincipal extends JFrame {
             btnStart.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnStart.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    realizarStartEnSegundoPlano();
+                    if (!comprobarTodosTienenCryptos()){
+                        JOptionPane.showMessageDialog(null, "Debes elegir alguna crypto para cada uno");
+                    }else {
+                        realizarStartEnSegundoPlano();
+                    }
                 }
             });
             btnStart.setBounds(183, 25, 92, 54);
         }
         return btnStart;
+    }
+
+    private boolean comprobarTodosTienenCryptos(){
+        for (IObserver u : usuarios){
+            if (u.getNameCryptos().size() == 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void realizarStartEnSegundoPlano() {
