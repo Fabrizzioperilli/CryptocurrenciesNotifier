@@ -44,4 +44,24 @@ public class User implements IObserver {
     public Map<String, Double> getCryptoPrices() {
         return cryptoPrices;
     }
+
+    @Override
+    public void addCrypto(String name){
+        nameCryptos.add(name);
+    }
+
+    @Override
+    public void deleteCrypto(String name) {
+        nameCryptos.remove(name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id);
+    }
 }
