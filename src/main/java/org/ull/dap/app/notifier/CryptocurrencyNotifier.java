@@ -49,6 +49,10 @@ public class CryptocurrencyNotifier implements Observable {
         }
     }
 
+    public List<IObserver> getObservers() {
+        return observers;
+    }
+
     @Override
     public void notifyObservers() {
         VentanaNotificacion v;
