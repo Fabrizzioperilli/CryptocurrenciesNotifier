@@ -1,4 +1,4 @@
-package org.ull.dap.app.gui;
+package org.ull.dap.app.views;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

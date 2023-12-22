@@ -1,6 +1,6 @@
-package org.ull.dap.app.user;
+package org.ull.dap.app.models.user;
 
-import org.ull.dap.app.gui.VentanaNotificacion;
+import org.ull.dap.app.views.VentanaNotificacion;
 
 import java.util.List;
 

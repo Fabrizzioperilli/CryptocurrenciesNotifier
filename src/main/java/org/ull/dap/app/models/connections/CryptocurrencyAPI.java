@@ -1,7 +1,7 @@
-package org.ull.dap.app.connections;
+package org.ull.dap.app.models.connections;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.ull.dap.app.enitity.Asset;
+import org.ull.dap.app.models.entity.Asset;
 
 import java.net.URI;
 import java.net.http.HttpClient;

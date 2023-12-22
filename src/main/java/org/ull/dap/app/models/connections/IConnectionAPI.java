@@ -1,4 +1,4 @@
-package org.ull.dap.app.connections;
+package org.ull.dap.app.models.connections;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;

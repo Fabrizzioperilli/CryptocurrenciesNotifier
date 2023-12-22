@@ -1,6 +1,6 @@
-package org.ull.dap.app.notifier;
+package org.ull.dap.app.models.notifier;
 
-import org.ull.dap.app.user.IObserver;
+import org.ull.dap.app.models.user.IObserver;
 
 public interface Observable {
 

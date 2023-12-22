@@ -1,4 +1,4 @@
-package org.ull.dap.app.enitity;
+package org.ull.dap.app.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
