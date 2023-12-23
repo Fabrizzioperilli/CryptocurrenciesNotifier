@@ -1,9 +1,9 @@
 package org.ull.dap.app.views;
 
-import org.ull.dap.app.models.notifier.CryptocurrencyNotifier;
-import org.ull.dap.app.models.notifier.Observable;
-import org.ull.dap.app.models.user.IObserver;
-import org.ull.dap.app.models.user.User;
+import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
+import org.ull.dap.app.models.notifiers.Observable;
+import org.ull.dap.app.models.users.IObserver;
+import org.ull.dap.app.models.users.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

@@ -1,11 +1,11 @@
-package org.ull.dap.app.models.notifier;
+package org.ull.dap.app.models.notifiers;
 
 import org.ull.dap.app.models.connections.CryptocurrencyAPI;
 import org.ull.dap.app.models.connections.IConnectionAPI;
-import org.ull.dap.app.models.entity.Asset;
+import org.ull.dap.app.models.entities.Asset;
 import org.ull.dap.app.views.VentanaNotificacion;
-import org.ull.dap.app.models.user.IObserver;
-import org.ull.dap.app.models.user.User;
+import org.ull.dap.app.models.users.IObserver;
+import org.ull.dap.app.models.users.User;
 
 import java.util.ArrayList;
 import java.util.List;

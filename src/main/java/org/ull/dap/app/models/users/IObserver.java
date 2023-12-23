@@ -1,4 +1,4 @@
-package org.ull.dap.app.models.user;
+package org.ull.dap.app.models.users;
 
 import org.ull.dap.app.views.VentanaNotificacion;
 
