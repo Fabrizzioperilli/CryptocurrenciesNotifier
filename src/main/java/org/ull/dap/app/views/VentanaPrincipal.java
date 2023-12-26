@@ -11,41 +11,29 @@ import java.awt.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class VentanaPrincipal extends JFrame {
 
+    public static final String ROUTE_IMAGE_BACKGROUND = "/images/grafico.png";
+    public static final String ROUTE_IMAGE_BITCOIN = "/images/bitcoin.png";
+    public static final String ROUTE_IMAGE_ETHEREUM = "/images/ethereum.png";
+    public static final String ROUTE_IMAGE_CARDANO = "/images/cardano.png";
+    public static final String ROUTE_IMAGE_LITECOIN = "/images/litecoin.png";
     private List<IObserver> usuarios = new ArrayList<>();
-    private JPanel contentPane;
-    private JPanel panel;
-    private JButton btnLogin;
-    private JLabel lblNombre;
-    private JLabel lblFondo;
-    private JCheckBox chckbxUser1;
-    private JCheckBox chckbxUser2;
-    private JCheckBox chckbxUser3;
     private Observable cryptocurrencyNotifier;
-    private JPanel pnSelCrypto;
     private JComboBox<IObserver> comboBox;
-    private JLabel lblBitcoin;
-    private JLabel lblEthereum;
-    private JLabel lblCardano;
-    private JLabel lblLitecoin;
-    private JLabel lblBitcoinImagen;
-    private JLabel lblEthereumImagen;
-    private JLabel lblCardanoImagen;
-    private JLabel lblLitecoinImagen;
-    private JButton btnStart;
-    private JButton btnAddBitcoin;
-    private JButton btnDeleteBitcoin;
-    private JButton btnAddEthereum;
-    private JButton btnDeleteEthereum;
-    private JButton btnAddCardano;
-    private JButton btnDeleteCardano;
-    private JButton btnAddLitecoin;
-    private JButton btnDeleteLitecoin;
-    private JLabel lblUser;
+    private JPanel contentPane, panel, pnSelCrypto;
+    private JButton btnLogin;
+    private JLabel lblNombre, lblFondo, lblBitcoin, lblEthereum, lblCardano, lblLitecoin, lblBitcoinImagen;
+    private JLabel lblEthereumImagen, lblCardanoImagen, lblLitecoinImagen, lblUser;
+    private JCheckBox chckbxUser1, chckbxUser2, chckbxUser3;
+    private JButton btnStart, btnAddBitcoin, btnDeleteBitcoin, btnAddEthereum, btnDeleteEthereum;
+    private JButton btnAddCardano, btnDeleteCardano, btnAddLitecoin, btnDeleteLitecoin;
+
     public VentanaPrincipal(Observable cryptocurrencyNotifier) {
         this.cryptocurrencyNotifier = cryptocurrencyNotifier;
         setTitle("CryptoNotifier");
@@ -141,7 +129,7 @@ public class VentanaPrincipal extends JFrame {
     private JLabel getLblFondo() {
         if (lblFondo == null) {
             lblFondo = new JLabel("");
-            lblFondo.setIcon(resizeIcon(new ImageIcon("src/main/java/org/ull/dap/app/gui/img/grafico.png"),288,200));
+            lblFondo.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_BACKGROUND))),288,200));
             lblFondo.setBounds(0, -8, 284, 186);
         }
         return lblFondo;
@@ -261,7 +249,7 @@ public class VentanaPrincipal extends JFrame {
     private JLabel getLblBitcoinImagen() {
         if (lblBitcoinImagen == null) {
             lblBitcoinImagen = new JLabel("");
-            lblBitcoinImagen.setIcon(resizeIcon(new ImageIcon("src/main/java/org/ull/dap/app/gui/img/bitcoin.png"),53,48));
+            lblBitcoinImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_BITCOIN))),53,48));
             lblBitcoinImagen.setBounds(118, 80, 53, 48);
         }
         return lblBitcoinImagen;
@@ -269,7 +257,7 @@ public class VentanaPrincipal extends JFrame {
     private JLabel getLblEthereumImagen() {
         if (lblEthereumImagen == null) {
             lblEthereumImagen = new JLabel("");
-            lblEthereumImagen.setIcon(resizeIcon(new ImageIcon("src/main/java/org/ull/dap/app/gui/img/ethereum.png"),53,48));
+            lblEthereumImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_ETHEREUM))),53,48));
             lblEthereumImagen.setBounds(118, 144, 53, 48);
         }
         return lblEthereumImagen;
@@ -277,7 +265,7 @@ public class VentanaPrincipal extends JFrame {
     private JLabel getLblCardanoImagen() {
         if (lblCardanoImagen == null) {
             lblCardanoImagen = new JLabel("");
-            lblCardanoImagen.setIcon(resizeIcon(new ImageIcon("src/main/java/org/ull/dap/app/gui/img/cardano.png"),53,48));
+            lblCardanoImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_CARDANO))),53,48));
             lblCardanoImagen.setBounds(118, 203, 53, 48);
         }
         return lblCardanoImagen;
@@ -285,7 +273,7 @@ public class VentanaPrincipal extends JFrame {
     private JLabel getLblLitecoinImagen() {
         if (lblLitecoinImagen == null) {
             lblLitecoinImagen = new JLabel("");
-            lblLitecoinImagen.setIcon(resizeIcon(new ImageIcon("src/main/java/org/ull/dap/app/gui/img/litecoin.png"),53,48));
+            lblLitecoinImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LITECOIN))),53,48));
             lblLitecoinImagen.setBounds(118, 261, 53, 48);
         }
         return lblLitecoinImagen;
