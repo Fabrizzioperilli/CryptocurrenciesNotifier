@@ -7,7 +7,6 @@ import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 import java.awt.event.ActionEvent;
@@ -18,25 +17,21 @@ import java.util.Objects;
 
 public class MainView extends JFrame implements IView {
 
-    public static final String ROUTE_IMAGE_BACKGROUND = "/images/logo_app.png";
+    public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
     public static final String ROUTE_IMAGE_BITCOIN = "/images/bitcoin.png";
     public static final String ROUTE_IMAGE_ETHEREUM = "/images/ethereum.png";
     public static final String ROUTE_IMAGE_CARDANO = "/images/cardano.png";
     public static final String ROUTE_IMAGE_LITECOIN = "/images/litecoin.png";
+    private JLabel lblTitle, lblLogo, lblBitcoin, lblEthereum, lblCardano, lblLitecoin, lblBitcoinImagen;
+    private JLabel lblEthereumImagen, lblCardanoImagen, lblLitecoinImagen, lblUser;
+    private JButton btnStart, btnAddBitcoin, btnDeleteBitcoin, btnAddEthereum, btnDeleteEthereum;
+    private JButton btnAddCardano, btnDeleteCardano, btnAddLitecoin, btnDeleteLitecoin, btnLogin;
+    private JComboBox<IObserver> comboBox;
+    private JList<String> usersList;
+    private JPanel contentPane, panel, pnSelCrypto;
     private final List<IObserver> usuarios = new ArrayList<>();
     private final AppController controller;
-    private JComboBox<IObserver> comboBox;
-
-    private JList<String> usersList;
-
     private String[] usersAvailable, usersSelected;
-    private JPanel contentPane, panel, pnSelCrypto;
-    private JButton btnLogin;
-    private JLabel lblNombre, lblFondo, lblBitcoin, lblEthereum, lblCardano, lblLitecoin, lblBitcoinImagen;
-    private JLabel lblEthereumImagen, lblCardanoImagen, lblLitecoinImagen, lblUser;
-
-    private JButton btnStart, btnAddBitcoin, btnDeleteBitcoin, btnAddEthereum, btnDeleteEthereum;
-    private JButton btnAddCardano, btnDeleteCardano, btnAddLitecoin, btnDeleteLitecoin;
 
     public MainView(Observable model) {
         this.controller = new AppController(model, this);
@@ -50,30 +45,40 @@ public class MainView extends JFrame implements IView {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 308, 397);
         setLocationRelativeTo(null);
-        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_BACKGROUND))).getImage());
-        getContentPane().setBackground(Color.WHITE);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LOGO))).getImage());
 
+        contentPane = new JPanel();
         setContentPane(contentPane);
         contentPane.setLayout(new CardLayout(0, 0));
         contentPane.add(getPanelLogin(), "LOGIN");
-        contentPane.add(getPanelSelectCrypto(), "SELECT");
+        contentPane.add(getPanelSelectCrypto(), "SELECT_CRYPTO");
     }
 
-    private JPanel getPanelLogin() {
-        if (panel == null) {
-            panel = new JPanel();
-            panel.setBackground(Color.WHITE);
-            panel.setLayout(null);
-            panel.add(getLblNombre());
-            panel.add(getLblFondo());
-            JScrollPane scrollPane = new JScrollPane(getListUsers());
-            scrollPane.setBounds(21, 225, 233, 61);
-            panel.add(scrollPane);
-            panel.add(getBtnLogin());
+    private JLabel getLblLogo() {
+        if (lblLogo != null) {
+            return lblLogo;
         }
-        return panel;
+        lblLogo = new JLabel("");
+        lblLogo.setIcon(resizeImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LOGO))), 200, 150));
+        lblLogo.setBounds(40, -8, 284, 186);
+        return lblLogo;
+    }
+
+    private JLabel getLblTitle() {
+        if (lblTitle != null) {
+            return lblTitle;
+        }
+        lblTitle = new JLabel("Users");
+        lblTitle.setFont(new Font("Tahoma", Font.BOLD, 25));
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitle.setBounds(24, 167, 233, 32);
+        return lblTitle;
+    }
+
+    private ImageIcon resizeImage(ImageIcon icon, int width, int height) {
+        Image image = icon.getImage(); // Obtiene la imagen del ImageIcon
+        Image newImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH); // Redimensiona la imagen
+        return new ImageIcon(newImage); // Crea un nuevo ImageIcon con la imagen redimensionada
     }
 
     public JButton getBtnLogin() {
@@ -99,27 +104,29 @@ public class MainView extends JFrame implements IView {
         return usersList;
     }
 
-    @Override
-    public String[] getUsersSelected() {
-        return this.usersSelected;
+    public JPanel getPanelLogin() {
+        if (panel != null) {
+            return panel;
+        }
+        panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+        panel.setLayout(null);
+        panel.add(getLblTitle());
+        panel.add(getLblLogo());
+        JScrollPane scrollPane = new JScrollPane(getListUsers());
+        scrollPane.setBounds(21, 225, 233, 61);
+        panel.add(scrollPane);
+        panel.add(getBtnLogin());
+        return panel;
     }
 
-    public void setUsersSelected(String[] usersSelected) {
-        this.usersSelected = usersSelected;
-    }
-
+    ///-------------------------------------
 
     public void nextWindow() {
         suscribirUsuarios();
         CardLayout cl = (CardLayout) (contentPane.getLayout());
-        cl.show(contentPane, "SELECT");
+        cl.show(contentPane, "SELECT_CRYPTO");
         rellenarComboBox();
-    }
-
-    private void rellenarComboBox() {
-        for (IObserver o : usuarios) {
-            comboBox.addItem(o);
-        }
     }
 
     private void suscribirUsuarios() {
@@ -130,29 +137,20 @@ public class MainView extends JFrame implements IView {
         }
     }
 
-    private JLabel getLblNombre() {
-        if (lblNombre == null) {
-            lblNombre = new JLabel("Users");
-            lblNombre.setFont(new Font("Tahoma", Font.BOLD, 25));
-            lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
-            lblNombre.setBounds(24, 167, 233, 32);
-        }
-        return lblNombre;
+    @Override
+    public String[] getUsersSelected() {
+        return this.usersSelected;
     }
 
-    private JLabel getLblFondo() {
-        if (lblFondo == null) {
-            lblFondo = new JLabel("");
-            lblFondo.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_BACKGROUND))), 200, 150));
-            lblFondo.setBounds(40, -8, 284, 186);
-        }
-        return lblFondo;
+    public void setUsersSelected(String[] usersSelected) {
+        this.usersSelected = usersSelected;
     }
 
-    private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
-        Image image = icon.getImage(); // Obtiene la imagen del ImageIcon
-        Image newImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH); // Redimensiona la imagen
-        return new ImageIcon(newImage); // Crea un nuevo ImageIcon con la imagen redimensionada
+
+    private void rellenarComboBox() {
+        for (IObserver o : usuarios) {
+            comboBox.addItem(o);
+        }
     }
 
     private JPanel getPanelSelectCrypto() {
@@ -246,7 +244,7 @@ public class MainView extends JFrame implements IView {
             return lblBitcoinImagen;
         }
         lblBitcoinImagen = new JLabel("");
-        lblBitcoinImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_BITCOIN))), 53, 48));
+        lblBitcoinImagen.setIcon(resizeImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_BITCOIN))), 53, 48));
         lblBitcoinImagen.setBounds(118, 80, 53, 48);
         return lblBitcoinImagen;
     }
@@ -256,7 +254,7 @@ public class MainView extends JFrame implements IView {
             return lblEthereumImagen;
         }
         lblEthereumImagen = new JLabel("");
-        lblEthereumImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_ETHEREUM))), 53, 48));
+        lblEthereumImagen.setIcon(resizeImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_ETHEREUM))), 53, 48));
         lblEthereumImagen.setBounds(118, 144, 53, 48);
         return lblEthereumImagen;
     }
@@ -266,7 +264,7 @@ public class MainView extends JFrame implements IView {
             return lblCardanoImagen;
         }
         lblCardanoImagen = new JLabel("");
-        lblCardanoImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_CARDANO))), 53, 48));
+        lblCardanoImagen.setIcon(resizeImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_CARDANO))), 53, 48));
         lblCardanoImagen.setBounds(118, 203, 53, 48);
         return lblCardanoImagen;
     }
@@ -276,7 +274,7 @@ public class MainView extends JFrame implements IView {
             return lblLitecoinImagen;
         }
         lblLitecoinImagen = new JLabel("");
-        lblLitecoinImagen.setIcon(resizeIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LITECOIN))), 53, 48));
+        lblLitecoinImagen.setIcon(resizeImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LITECOIN))), 53, 48));
         lblLitecoinImagen.setBounds(118, 261, 53, 48);
         return lblLitecoinImagen;
     }
@@ -449,12 +447,12 @@ public class MainView extends JFrame implements IView {
     }
 
     private JLabel getLblUser() {
-        if (lblUser == null) {
-            lblUser = new JLabel("User");
-            lblUser.setForeground(Color.WHITE);
-            lblUser.setFont(new Font("Tahoma", Font.BOLD, 17));
-            lblUser.setBounds(10, 10, 161, 30);
+        if (lblUser != null) {
+            return lblUser;
         }
+        lblUser = new JLabel("User");
+        lblUser.setFont(new Font("Tahoma", Font.BOLD, 17));
+        lblUser.setBounds(10, 10, 161, 30);
         return lblUser;
     }
 

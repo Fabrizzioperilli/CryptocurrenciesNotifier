@@ -54,4 +54,11 @@ public class AppController implements ActionListener {
         System.out.println(Arrays.toString(view.getUsersSelected()));
         ((MainView) view).nextWindow();
     }
+
+    public void suscribeUsers(String[] usersSelected) {
+//        for (String user : usersSelected) {
+//
+//            notifier.subscribe(
+//        }
+    }
 }
