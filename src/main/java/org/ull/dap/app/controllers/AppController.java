@@ -41,47 +41,45 @@ public class AppController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("LOGIN")) {
-            System.out.println("LOGIN");
-            login();
-        } else if (e.getActionCommand().equals("START")) {
-            System.out.println("Start");
-            if (checkAllUsersHaveCryptos()) {
-                System.out.println("All users have cryptos");
-                startBackground();
-            } else {
-                JOptionPane.showMessageDialog(null, "You must select at least 1 crypto for each user", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else if (e.getActionCommand().equals("ADD_BITCOIN")) {
-            addCrypto("bitcoin");
-        } else if (e.getActionCommand().equals("ADD_ETHEREUM")) {
-            addCrypto("ethereum");
-        } else if (e.getActionCommand().equals("ADD_LITECOIN")) {
-            addCrypto("litecoin");
-        } else if (e.getActionCommand().equals("ADD_CARDANO")) {
-            addCrypto("cardano");
-        } else if (e.getActionCommand().equals("DELETE_BITCOIN")) {
-            deleteCrypto("bitcoin");
-        } else if (e.getActionCommand().equals("DELETE_ETHEREUM")) {
-            deleteCrypto("ethereum");
-        } else if (e.getActionCommand().equals("DELETE_LITECOIN")) {
-            deleteCrypto("litecoin");
-        } else if (e.getActionCommand().equals("DELETE_CARDANO")) {
-            deleteCrypto("cardano");
+        switch (e.getActionCommand()) {
+            case "LOGIN" -> handleLogin();
+            case "START" -> handleStart();
+            case "ADD_BITCOIN", "DELETE_BITCOIN", "ADD_ETHEREUM", "DELETE_ETHEREUM",
+                    "ADD_LITECOIN", "DELETE_LITECOIN", "ADD_CARDANO", "DELETE_CARDANO" -> handleCryptoAction(e.getActionCommand());
         }
-
     }
 
-    private void login() {
-        String[] usersSelected = ((MainView) view).getListUsers().getSelectedValuesList().toArray(new String[0]);
+    private void handleLogin() {
+        String[] usersSelected = view.getUsersSelected();
 
         if (usersSelected.length < 1) {
             JOptionPane.showMessageDialog(null, "You must select at least 1 users", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        ((MainView)view).setUsersSelected(usersSelected);
+        view.setUsersSelected(usersSelected);
         System.out.println(Arrays.toString(view.getUsersSelected()));
         ((MainView) view).nextWindow();
+    }
+
+    private void handleStart() {
+        if (checkAllUsersHaveCryptos()) {
+            System.out.println("All users have cryptos");
+            startBackground();
+        } else {
+            showError();
+        }
+    }
+    private void handleCryptoAction(String actionCommand) {
+        String cryptoName = actionCommand.split("_")[1].toLowerCase();
+        if (actionCommand.startsWith("ADD")) {
+            addCrypto(cryptoName);
+        } else if (actionCommand.startsWith("DELETE")) {
+            deleteCrypto(cryptoName);
+        }
+    }
+
+    private void showError() {
+        JOptionPane.showMessageDialog(null, "You must select at least 1 crypto for each user", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public void suscribeUsers(String[] usersSelected) {
@@ -114,27 +112,28 @@ public class AppController implements ActionListener {
         worker.execute();
     }
 
-    void addCrypto(String name) {
+    private void addCrypto(String name) {
         for (IObserver observer : notifier.getObservers()) {
-            if (((User) observer).getName().equals(((MainView) view).getComboBoxUsersSelected().getSelectedItem())) {
-                if (!observer.getNameCryptos().contains(name)) {
-                    observer.addCrypto(name);
-                    System.out.println("Added " + name + " to " + ((User) observer).getName());
-                    ((MainView)view).enableButtons(name, false);
-                }
-            }
+            handleCryptoOperation(name, observer, false, "Added");
         }
     }
 
-
-    void deleteCrypto(String name) {
+    private void deleteCrypto(String name) {
         for (IObserver observer : notifier.getObservers()) {
-            if (((User) observer).getName().equals(((MainView) view).getComboBoxUsersSelected().getSelectedItem())) {
-                if (observer.getNameCryptos().contains(name)) {
+            handleCryptoOperation(name, observer, true, "Deleted");
+        }
+    }
+
+    private void handleCryptoOperation(String name, IObserver observer, boolean isDelete, String action) {
+        if (((User) observer).getName().equals(((MainView) view).getComboBoxUsersSelected().getSelectedItem())) {
+            if (isDelete == observer.getNameCryptos().contains(name)) {
+                if (isDelete) {
                     observer.deleteCrypto(name);
-                    System.out.println("Deleted " + name + " to " + ((User) observer).getName());
-                    ((MainView)view).enableButtons(name, true);
+                } else {
+                    observer.addCrypto(name);
                 }
+                System.out.println(action + " " + name + " to " + ((User) observer).getName());
+                ((MainView) view).enableButtons(name, isDelete);
             }
         }
     }

@@ -1,7 +1,10 @@
 package org.ull.dap.app.views;
 
 public interface IView {
-    void update();
 
     String[] getUsersSelected();
+
+    void setUsersSelected(String[] usersSelected);
+
+    void enableButtons(String name, boolean enable);
 }

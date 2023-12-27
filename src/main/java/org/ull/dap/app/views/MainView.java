@@ -370,9 +370,11 @@ public class MainView extends JFrame implements IView {
 
     @Override
     public String[] getUsersSelected() {
-        return this.usersSelected;
+        this.usersSelected = getListUsers().getSelectedValuesList().toArray(new String[0]);
+        return usersSelected;
     }
 
+    @Override
     public void setUsersSelected(String[] usersSelected) {
         this.usersSelected = usersSelected;
     }
@@ -390,6 +392,7 @@ public class MainView extends JFrame implements IView {
         return btnStart;
     }
 
+    @Override
     public void enableButtons(String nombre, boolean tipo) {
         switch (nombre) {
             case "litecoin" -> {
@@ -431,10 +434,5 @@ public class MainView extends JFrame implements IView {
                 break;
             }
         }
-    }
-
-    @Override
-    public void update() {
-
     }
 }
