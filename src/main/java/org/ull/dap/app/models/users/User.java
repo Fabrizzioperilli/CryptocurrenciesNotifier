@@ -64,4 +64,8 @@ public class User implements IObserver {
     public int hashCode() {
         return Objects.hash(name, id);
     }
+
+    public String getName() {
+        return name;
+    }
 }

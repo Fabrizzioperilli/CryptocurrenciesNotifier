@@ -2,7 +2,6 @@ package org.ull.dap.app.views;
 
 import org.ull.dap.app.controllers.AppController;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
-import org.ull.dap.app.models.notifiers.Observable;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 
@@ -26,14 +25,14 @@ public class MainView extends JFrame implements IView {
     private JLabel lblEthereumImagen, lblCardanoImagen, lblLitecoinImagen, lblUser;
     private JButton btnStart, btnAddBitcoin, btnDeleteBitcoin, btnAddEthereum, btnDeleteEthereum;
     private JButton btnAddCardano, btnDeleteCardano, btnAddLitecoin, btnDeleteLitecoin, btnLogin;
-    private JComboBox<IObserver> comboBox;
+    private JComboBox<String> comboBoxUsersSelected;
     private JList<String> usersList;
     private JPanel contentPane, panel, pnSelCrypto;
     private final List<IObserver> usuarios = new ArrayList<>();
     private final AppController controller;
     private String[] usersAvailable, usersSelected;
 
-    public MainView(Observable model) {
+    public MainView(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         initializeUI();
     }
@@ -123,42 +122,44 @@ public class MainView extends JFrame implements IView {
     ///-------------------------------------
 
     public void nextWindow() {
-        suscribirUsuarios();
+        controller.suscribeUsers(usersSelected);
+//        suscribirUsuarios();
         CardLayout cl = (CardLayout) (contentPane.getLayout());
         cl.show(contentPane, "SELECT_CRYPTO");
-        rellenarComboBox();
+        fillComboBoxUsers();
     }
 
-    private void suscribirUsuarios() {
-        for (String user : usersSelected) {
-            IObserver usuario = new User(user, 0, new ArrayList<String>());
-            this.controller.getNotifier().subscribe(usuario);
-            usuarios.add(usuario);
+//    private void suscribirUsuarios() {
+//        for (String user : usersSelected) {
+//            IObserver usuario = new User(user, 0, new ArrayList<String>());
+//            this.controller.getNotifier().subscribe(usuario);
+//            usuarios.add(usuario);
+//        }
+//    }
+
+    private JComboBox<String> getComboBoxUsersSelected() {
+        if (comboBoxUsersSelected != null) {
+            return comboBoxUsersSelected;
+        }
+        comboBoxUsersSelected = new JComboBox<>();
+        comboBoxUsersSelected.setBounds(10, 50, 161, 28);
+        comboBoxUsersSelected.addActionListener(e -> recolocarBotones());
+        return comboBoxUsersSelected;
+    }
+
+    private void fillComboBoxUsers() {
+        for (String u : usersSelected) {
+            comboBoxUsersSelected.addItem(u);
         }
     }
 
-    @Override
-    public String[] getUsersSelected() {
-        return this.usersSelected;
-    }
-
-    public void setUsersSelected(String[] usersSelected) {
-        this.usersSelected = usersSelected;
-    }
-
-
-    private void rellenarComboBox() {
-        for (IObserver o : usuarios) {
-            comboBox.addItem(o);
-        }
-    }
 
     private JPanel getPanelSelectCrypto() {
         if (pnSelCrypto == null) {
             pnSelCrypto = new JPanel();
             pnSelCrypto.setBackground(Color.WHITE);
             pnSelCrypto.setLayout(null);
-            pnSelCrypto.add(getComboBox());
+            pnSelCrypto.add(getComboBoxUsersSelected());
             pnSelCrypto.add(getLblBitcoin());
             pnSelCrypto.add(getLblEthereum());
             pnSelCrypto.add(getLblCardano());
@@ -179,20 +180,6 @@ public class MainView extends JFrame implements IView {
             pnSelCrypto.add(getLblUser());
         }
         return pnSelCrypto;
-    }
-
-    private JComboBox<IObserver> getComboBox() {
-        if (comboBox == null) {
-            comboBox = new JComboBox<IObserver>();
-            comboBox.setBounds(10, 50, 161, 28);
-            comboBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    recolocarBotones();
-                }
-            });
-        }
-        return comboBox;
     }
 
     private JLabel getLblBitcoin() {
@@ -249,6 +236,15 @@ public class MainView extends JFrame implements IView {
         return lblBitcoinImagen;
     }
 
+    @Override
+    public String[] getUsersSelected() {
+        return this.usersSelected;
+    }
+
+    public void setUsersSelected(String[] usersSelected) {
+        this.usersSelected = usersSelected;
+    }
+
     private JLabel getLblEthereumImagen() {
         if (lblEthereumImagen != null) {
             return lblEthereumImagen;
@@ -284,13 +280,11 @@ public class MainView extends JFrame implements IView {
             btnStart = new JButton("Start");
             btnStart.setBackground(Color.WHITE);
             btnStart.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnStart.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (!comprobarTodosTienenCryptos()) {
-                        JOptionPane.showMessageDialog(null, "Debes elegir alguna crypto para cada uno");
-                    } else {
-                        realizarStartEnSegundoPlano();
-                    }
+            btnStart.addActionListener(e -> {
+                if (!comprobarTodosTienenCryptos()) {
+                    JOptionPane.showMessageDialog(null, "Debes elegir alguna crypto para cada uno");
+                } else {
+                    realizarStartEnSegundoPlano();
                 }
             });
             btnStart.setBounds(183, 25, 92, 54);
@@ -311,7 +305,7 @@ public class MainView extends JFrame implements IView {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                ((CryptocurrencyNotifier) controller.getNotifier()).start();
+                controller.getNotifier().start();
                 return null;
             }
 
@@ -326,11 +320,7 @@ public class MainView extends JFrame implements IView {
         if (btnAddBitcoin == null) {
             btnAddBitcoin = new JButton("+");
             btnAddBitcoin.setBackground(new Color(0, 255, 0));
-            btnAddBitcoin.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addCrypto("bitcoin");
-                }
-            });
+            btnAddBitcoin.addActionListener(e -> addCrypto("bitcoin"));
             btnAddBitcoin.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnAddBitcoin.setBounds(183, 92, 47, 33);
         }
@@ -342,11 +332,7 @@ public class MainView extends JFrame implements IView {
             btnDeleteBitcoin = new JButton("-");
             btnDeleteBitcoin.setEnabled(false);
             btnDeleteBitcoin.setBackground(new Color(255, 0, 0));
-            btnDeleteBitcoin.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    deleteCrypto("bitcoin");
-                }
-            });
+            btnDeleteBitcoin.addActionListener(e -> deleteCrypto("bitcoin"));
             btnDeleteBitcoin.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnDeleteBitcoin.setBounds(235, 92, 40, 33);
         }
@@ -357,11 +343,7 @@ public class MainView extends JFrame implements IView {
         if (btnAddEthereum == null) {
             btnAddEthereum = new JButton("+");
             btnAddEthereum.setBackground(new Color(0, 255, 0));
-            btnAddEthereum.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addCrypto("ethereum");
-                }
-            });
+            btnAddEthereum.addActionListener(e -> addCrypto("ethereum"));
             btnAddEthereum.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnAddEthereum.setBounds(183, 152, 47, 33);
         }
@@ -373,11 +355,7 @@ public class MainView extends JFrame implements IView {
             btnDeleteEthereum = new JButton("-");
             btnDeleteEthereum.setEnabled(false);
             btnDeleteEthereum.setBackground(new Color(255, 0, 0));
-            btnDeleteEthereum.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    deleteCrypto("ethereum");
-                }
-            });
+            btnDeleteEthereum.addActionListener(e -> deleteCrypto("ethereum"));
             btnDeleteEthereum.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnDeleteEthereum.setBounds(235, 152, 40, 33);
         }
@@ -388,11 +366,7 @@ public class MainView extends JFrame implements IView {
         if (btnAddCardano == null) {
             btnAddCardano = new JButton("+");
             btnAddCardano.setBackground(new Color(0, 255, 0));
-            btnAddCardano.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addCrypto("cardano");
-                }
-            });
+            btnAddCardano.addActionListener(e -> addCrypto("cardano"));
             btnAddCardano.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnAddCardano.setBounds(183, 214, 47, 33);
         }
@@ -404,11 +378,7 @@ public class MainView extends JFrame implements IView {
             btnDeleteCardano = new JButton("-");
             btnDeleteCardano.setEnabled(false);
             btnDeleteCardano.setBackground(new Color(255, 0, 0));
-            btnDeleteCardano.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    deleteCrypto("cardano");
-                }
-            });
+            btnDeleteCardano.addActionListener(e -> deleteCrypto("cardano"));
             btnDeleteCardano.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnDeleteCardano.setBounds(235, 214, 40, 33);
         }
@@ -419,11 +389,7 @@ public class MainView extends JFrame implements IView {
         if (btnAddLitecoin == null) {
             btnAddLitecoin = new JButton("+");
             btnAddLitecoin.setBackground(new Color(0, 255, 0));
-            btnAddLitecoin.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addCrypto("litecoin");
-                }
-            });
+            btnAddLitecoin.addActionListener(e -> addCrypto("litecoin"));
             btnAddLitecoin.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnAddLitecoin.setBounds(183, 272, 47, 33);
         }
@@ -435,11 +401,7 @@ public class MainView extends JFrame implements IView {
             btnDeleteLitecoin = new JButton("-");
             btnDeleteLitecoin.setEnabled(false);
             btnDeleteLitecoin.setBackground(new Color(255, 0, 0));
-            btnDeleteLitecoin.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    deleteCrypto("litecoin");
-                }
-            });
+            btnDeleteLitecoin.addActionListener(e -> deleteCrypto("litecoin"));
             btnDeleteLitecoin.setFont(new Font("Tahoma", Font.BOLD, 15));
             btnDeleteLitecoin.setBounds(235, 272, 40, 33);
         }
@@ -457,9 +419,9 @@ public class MainView extends JFrame implements IView {
     }
 
     private void addCrypto(String nombre) {
-        for (IObserver o : ((CryptocurrencyNotifier) this.controller.getNotifier()).getObservers()) {
-            if (o.equals(comboBox.getSelectedItem())) {
-                if (!(o.getNameCryptos().stream().anyMatch(elemento -> elemento.equals(nombre)))) {
+        for (IObserver o: this.controller.getNotifier().getObservers()) {
+            if (((User) o).getName().equals(comboBoxUsersSelected.getSelectedItem())) {
+                if (o.getNameCryptos().stream().noneMatch(elemento -> elemento.equals(nombre))) {
                     o.addCrypto(nombre);
                     habilitarBotones(nombre, false);
                 }
@@ -469,8 +431,8 @@ public class MainView extends JFrame implements IView {
     }
 
     private void deleteCrypto(String nombre) {
-        for (IObserver o : ((CryptocurrencyNotifier) this.controller.getNotifier()).getObservers()) {
-            if (o.equals(comboBox.getSelectedItem())) {
+        for (IObserver o: this.controller.getNotifier().getObservers()) {
+            if (((User) o).getName().equals(comboBoxUsersSelected.getSelectedItem())) {
                 if (o.getNameCryptos().stream().anyMatch(elemento -> elemento.equals(nombre))) {
                     o.deleteCrypto(nombre);
                     habilitarBotones(nombre, true);
@@ -481,35 +443,45 @@ public class MainView extends JFrame implements IView {
     }
 
     private void habilitarBotones(String nombre, boolean tipo) {
-        if (nombre.equals("litecoin")) {
-            btnAddLitecoin.setEnabled(tipo);
-            btnDeleteLitecoin.setEnabled(!tipo);
-        } else if (nombre.equals("bitcoin")) {
-            btnAddBitcoin.setEnabled(tipo);
-            btnDeleteBitcoin.setEnabled(!tipo);
-        } else if (nombre.equals("ethereum")) {
-            btnAddEthereum.setEnabled(tipo);
-            btnDeleteEthereum.setEnabled(!tipo);
-        } else if (nombre.equals("cardano")) {
-            btnAddCardano.setEnabled(tipo);
-            btnDeleteCardano.setEnabled(!tipo);
+        switch (nombre) {
+            case "litecoin" -> {
+                btnAddLitecoin.setEnabled(tipo);
+                btnDeleteLitecoin.setEnabled(!tipo);
+            }
+            case "bitcoin" -> {
+                btnAddBitcoin.setEnabled(tipo);
+                btnDeleteBitcoin.setEnabled(!tipo);
+            }
+            case "ethereum" -> {
+                btnAddEthereum.setEnabled(tipo);
+                btnDeleteEthereum.setEnabled(!tipo);
+            }
+            case "cardano" -> {
+                btnAddCardano.setEnabled(tipo);
+                btnDeleteCardano.setEnabled(!tipo);
+            }
         }
     }
 
     private void recolocarBotones() {
-        activarBotones("bitcoin", getBtnAddBitcoin(), getBtnDeleteBitcoin());
-        activarBotones("litecoin", getBtnAddLitecoin(), getBtnDeleteLitecoin());
-        activarBotones("ethereum", getBtnAddEthereum(), getBtnDeleteEthereum());
-        activarBotones("cardano", getBtnAddCardano(), getBtnDeleteCardano());
+        activateButtons("bitcoin", getBtnAddBitcoin(), getBtnDeleteBitcoin());
+        activateButtons("litecoin", getBtnAddLitecoin(), getBtnDeleteLitecoin());
+        activateButtons("ethereum", getBtnAddEthereum(), getBtnDeleteEthereum());
+        activateButtons("cardano", getBtnAddCardano(), getBtnDeleteCardano());
     }
 
-    private void activarBotones(String name, JButton add, JButton delete) {
-        if (((IObserver) comboBox.getSelectedItem()).getNameCryptos().stream().anyMatch(elemento -> elemento.equals(name))) {
-            add.setEnabled(false);
-            delete.setEnabled(true);
-        } else {
-            add.setEnabled(true);
-            delete.setEnabled(false);
+    private void activateButtons(String name, JButton addButton, JButton deleteButton) {
+        for (IObserver o: this.controller.getNotifier().getObservers()) {
+            if (((User) o).getName().equals(comboBoxUsersSelected.getSelectedItem())) {
+                if (o.getNameCryptos().stream().anyMatch(e -> e.equals(name))) {
+                    addButton.setEnabled(false);
+                    deleteButton.setEnabled(true);
+                } else {
+                    addButton.setEnabled(true);
+                    deleteButton.setEnabled(false);
+                }
+                break;
+            }
         }
     }
 

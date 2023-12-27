@@ -1,30 +1,33 @@
 package org.ull.dap.app.controllers;
 
+import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.notifiers.Observable;
+import org.ull.dap.app.models.users.User;
 import org.ull.dap.app.views.IView;
 import org.ull.dap.app.views.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AppController implements ActionListener {
 
-    private Observable notifier;
+    private CryptocurrencyNotifier notifier;
 
     private IView view;
 
-    public AppController(Observable notifier, IView view) {
+    public AppController(CryptocurrencyNotifier notifier, IView view) {
         this.notifier = notifier;
         this.view = view;
     }
 
-    public Observable getNotifier() {
+    public CryptocurrencyNotifier getNotifier() {
         return notifier;
     }
 
-    public void setNotifier(Observable notifier) {
+    public void setNotifier(CryptocurrencyNotifier notifier) {
         this.notifier = notifier;
     }
 
@@ -56,9 +59,8 @@ public class AppController implements ActionListener {
     }
 
     public void suscribeUsers(String[] usersSelected) {
-//        for (String user : usersSelected) {
-//
-//            notifier.subscribe(
-//        }
+        for (int i = 0; i < usersSelected.length; i++) {
+            notifier.subscribe(new User(usersSelected[i], i, new ArrayList<>()));
+        }
     }
 }
