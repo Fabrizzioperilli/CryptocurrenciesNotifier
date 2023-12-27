@@ -133,7 +133,7 @@ public class AppController implements ActionListener {
                     observer.addCrypto(name);
                 }
                 System.out.println(action + " " + name + " to " + ((User) observer).getName());
-                ((MainView) view).enableButtons(name, isDelete);
+                view.enableButtons(name, isDelete);
             }
         }
     }

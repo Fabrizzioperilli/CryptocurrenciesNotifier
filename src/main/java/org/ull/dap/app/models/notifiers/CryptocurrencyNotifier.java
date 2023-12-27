@@ -3,7 +3,7 @@ package org.ull.dap.app.models.notifiers;
 import org.ull.dap.app.models.connections.CryptocurrencyAPI;
 import org.ull.dap.app.models.connections.IConnectionAPI;
 import org.ull.dap.app.models.entities.Asset;
-import org.ull.dap.app.views.VentanaNotificacion;
+import org.ull.dap.app.views.Notification;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 
@@ -18,13 +18,13 @@ import java.util.concurrent.TimeUnit;
 
 public class CryptocurrencyNotifier implements Observable {
 
-    private List<IObserver> observers;
+    private final List<IObserver> observers;
 
-    private IConnectionAPI connectionAPI;
+    private final IConnectionAPI connectionAPI;
 
-    private List<String> namesCryptocurrencies;
+    private final List<String> namesCryptocurrencies;
 
-    private List<Asset> assets;
+    private final List<Asset> assets;
 
     private final int TIME_TO_NOTIFY = 40;
 
@@ -44,9 +44,7 @@ public class CryptocurrencyNotifier implements Observable {
 
     @Override
     public void unsubscribe(IObserver observer) {
-        if (this.observers.contains(observer)) {
-            this.observers.remove(observer);
-        }
+        this.observers.remove(observer);
     }
 
     public List<IObserver> getObservers() {
@@ -55,9 +53,9 @@ public class CryptocurrencyNotifier implements Observable {
 
     @Override
     public void notifyObservers() {
-        VentanaNotificacion v;
+        Notification v;
         for (IObserver observer : observers) {
-            v = new VentanaNotificacion();
+            v = new Notification();
             Map<String, Double> cryptoPrices = ((User) observer).getCryptoPrices();
             for (Asset asset : assets) {
                 String assetId = asset.getData().getId();

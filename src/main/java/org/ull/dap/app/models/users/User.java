@@ -1,6 +1,6 @@
 package org.ull.dap.app.models.users;
 
-import org.ull.dap.app.views.VentanaNotificacion;
+import org.ull.dap.app.views.Notification;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +28,11 @@ public class User implements IObserver {
     }
 
     @Override
-    public void update(String nameCrypto, double newPrice, VentanaNotificacion v) {
+    public void update(String nameCrypto, double newPrice, Notification v) {
         cryptoPrices.put(nameCrypto, newPrice);
         System.out.println(name + " has been notified about " + nameCrypto +
                 ", the price has changed to: " + cryptoPrices.get(nameCrypto) + " USD");
-        v.crearNotificacion(name,nameCrypto,newPrice);
+        v.createNotify(name,nameCrypto,newPrice);
     }
 
     @Override
