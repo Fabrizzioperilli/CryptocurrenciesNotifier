@@ -18,9 +18,9 @@ public class VentanaNotificacion extends JFrame {
     private JPanel contentPane;
     private JPanel pnNotificacion;
     private JPanel pnTitulo;
-    private JLabel lblImagen1;
+
     private JLabel lblTitulo;
-    private JLabel lblImagen2;
+
     private JPanel pnPieDeVentana;
     private JLabel lblPie;
     private JScrollPane scpnCrypto;
@@ -61,37 +61,19 @@ public class VentanaNotificacion extends JFrame {
             pnTitulo = new JPanel();
             pnTitulo.setBackground(new Color(1, 1, 44));
             pnTitulo.setLayout(new BorderLayout(0, 0));
-            pnTitulo.add(getLabel_1(), BorderLayout.WEST);
             pnTitulo.add(getLabel_2());
-            pnTitulo.add(getLabel_3(), BorderLayout.EAST);
         }
         return pnTitulo;
     }
-    private JLabel getLabel_1() {
-        if (lblImagen1 == null) {
-            lblImagen1 = new JLabel("");
-            ImageIcon i = new ImageIcon("src/main/java/org/ull/dap/app/gui/img/alarma.png");
-            lblImagen1.setIcon(resizeIcon(i,80,80));
-        }
-        return lblImagen1;
-    }
+
     private JLabel getLabel_2() {
         if (lblTitulo == null) {
-            lblTitulo = new JLabel("Cambio de precio");
+            lblTitulo = new JLabel("New Prices");
             lblTitulo.setForeground(new Color(24, 243, 7));
             lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 19));
             lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         }
         return lblTitulo;
-    }
-    private JLabel getLabel_3() {
-        if (lblImagen2 == null) {
-            lblImagen2 = new JLabel("");
-            ImageIcon i = new ImageIcon("src/main/java/org/ull/dap/app/gui/img/alarma.png");
-            lblImagen2.setIcon(resizeIcon(i,80,80));
-
-        }
-        return lblImagen2;
     }
 
     public ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
