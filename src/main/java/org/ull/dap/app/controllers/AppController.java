@@ -5,12 +5,17 @@ import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 import org.ull.dap.app.views.IView;
 import org.ull.dap.app.views.MainView;
+import org.ull.dap.app.views.Notification;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class AppController implements ActionListener {
 
@@ -44,8 +49,8 @@ public class AppController implements ActionListener {
         switch (e.getActionCommand()) {
             case "LOGIN" -> handleLogin();
             case "START" -> handleStart();
-            case "ADD_BITCOIN", "DELETE_BITCOIN", "ADD_ETHEREUM", "DELETE_ETHEREUM",
-                    "ADD_LITECOIN", "DELETE_LITECOIN", "ADD_CARDANO", "DELETE_CARDANO" -> handleCryptoAction(e.getActionCommand());
+            case "ADD_BITCOIN", "DELETE_BITCOIN", "ADD_ETHEREUM", "DELETE_ETHEREUM", "ADD_LITECOIN", "DELETE_LITECOIN", "ADD_CARDANO", "DELETE_CARDANO" ->
+                    handleCryptoAction(e.getActionCommand());
         }
     }
 
@@ -69,6 +74,7 @@ public class AppController implements ActionListener {
             showError();
         }
     }
+
     private void handleCryptoAction(String actionCommand) {
         String cryptoName = actionCommand.split("_")[1].toLowerCase();
         if (actionCommand.startsWith("ADD")) {
@@ -90,23 +96,44 @@ public class AppController implements ActionListener {
 
     public boolean checkAllUsersHaveCryptos() {
         for (int i = 0; i < view.getUsersSelected().length; i++) {
-            if (((User) notifier.getObservers().get(i)).getNameCryptos().size() < 1) {
+            if (notifier.getObservers().get(i).getNameCryptos().size() < 1) {
                 return false;
             }
         }
         return true;
     }
 
+
+    public void start() {
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        for (IObserver observer : notifier.getObservers()) {
+            ((User) observer).setNotification(new Notification());
+            ((User) observer).getNotification().setVisible(true);
+        }
+
+        ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(() -> {
+            notifier.getAssets().clear();
+            try {
+                for (String nameCrypto : notifier.getNamesCryptocurrencies()) {
+                    notifier.getAssets().add(notifier.getConnectionAPI().getAssetData(nameCrypto));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Assets:\n ");
+            notifier.getAssets().forEach(v -> System.out.println(v.getData().getName() + " " + v.getData().getPriceUsd()));
+            notifier.notifyObservers();
+            System.out.println("\n");
+        }, 0, 40, TimeUnit.SECONDS);
+    }
+
     private void startBackground() {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
-            protected Void doInBackground() throws Exception {
-                notifier.start();
+            protected Void doInBackground() {
+                start();
                 return null;
-            }
-
-            @Override
-            protected void done() {
             }
         };
         worker.execute();
@@ -137,6 +164,4 @@ public class AppController implements ActionListener {
             }
         }
     }
-
-
 }

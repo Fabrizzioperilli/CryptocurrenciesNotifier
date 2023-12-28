@@ -1,16 +1,9 @@
 package org.ull.dap.app.views;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
-import javax.swing.JLabel;
-
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
 
 public class Notification extends JFrame {
 
@@ -108,7 +101,7 @@ public class Notification extends JFrame {
     private JPanel getCryptoPanel() {
         if (cryptoPanel == null) {
             cryptoPanel = new JPanel();
-            cryptoPanel.setLayout(new GridLayout(5, 1, 0, 0));
+            cryptoPanel.setLayout(new GridLayout(8, 0, 0, 0));
         }
         return cryptoPanel;
     }
@@ -129,8 +122,10 @@ public class Notification extends JFrame {
         l_imagen.setIcon(resizeIcon(i,30,30));
         l_texto.setText(nombre+ ","+crypto+"'s price has changed to: "+ price + "USD");
         l_texto.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cryptoPanel.add(p);
         p.add(l_texto, BorderLayout.CENTER);
         p.add(l_imagen, BorderLayout.EAST);
+        cryptoPanel.add(p);
+        cryptoPanel.revalidate();
+        cryptoPanel.repaint();
     }
 }

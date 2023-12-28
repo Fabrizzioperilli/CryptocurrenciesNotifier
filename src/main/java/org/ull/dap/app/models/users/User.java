@@ -14,6 +14,8 @@ public class User implements IObserver {
     private List<String> nameCryptos;
     private Map<String, Double> cryptoPrices;
 
+    private Notification v;
+
     public User() {}
 
     public User(String name, long id, List<String> nameCryptos) {
@@ -28,11 +30,11 @@ public class User implements IObserver {
     }
 
     @Override
-    public void update(String nameCrypto, double newPrice, Notification v) {
+    public void update(String nameCrypto, double newPrice) {
         cryptoPrices.put(nameCrypto, newPrice);
         System.out.println(name + " has been notified about " + nameCrypto +
                 ", the price has changed to: " + cryptoPrices.get(nameCrypto) + " USD");
-        v.createNotify(name,nameCrypto,newPrice);
+        v.createNotify(name, nameCrypto, newPrice);
     }
 
     @Override
@@ -67,5 +69,13 @@ public class User implements IObserver {
 
     public String getName() {
         return name;
+    }
+
+    public void setNotification(Notification v) {
+        this.v = v;
+    }
+
+    public Notification getNotification() {
+        return v;
     }
 }

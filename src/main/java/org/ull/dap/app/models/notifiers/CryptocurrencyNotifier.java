@@ -3,7 +3,6 @@ package org.ull.dap.app.models.notifiers;
 import org.ull.dap.app.models.connections.CryptocurrencyAPI;
 import org.ull.dap.app.models.connections.IConnectionAPI;
 import org.ull.dap.app.models.entities.Asset;
-import org.ull.dap.app.views.Notification;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 
@@ -11,10 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class CryptocurrencyNotifier implements Observable {
 
@@ -53,9 +48,7 @@ public class CryptocurrencyNotifier implements Observable {
 
     @Override
     public void notifyObservers() {
-        Notification v;
         for (IObserver observer : observers) {
-            v = new Notification();
             Map<String, Double> cryptoPrices = ((User) observer).getCryptoPrices();
             for (Asset asset : assets) {
                 String assetId = asset.getData().getId();
@@ -65,8 +58,7 @@ public class CryptocurrencyNotifier implements Observable {
                     Double currentPrice = asset.getData().getPriceUsd();
 
                     if (!Objects.equals(previousPrice, currentPrice)) {
-                        observer.update(assetId, currentPrice, v);
-                        v.setVisible(true);
+                        observer.update(assetId, currentPrice);
                         cryptoPrices.put(assetId, currentPrice);
                     }
                 }
@@ -74,35 +66,15 @@ public class CryptocurrencyNotifier implements Observable {
         }
     }
 
+    public List<Asset> getAssets() {
+        return assets;
+    }
 
-    //Inicia las tareas programadas para obtener los datos de las criptomonedas cada 40 segundos
-    public void start() {
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-        ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(() -> {
-            assets.clear();
-            try {
-                for (String nameCrypto : namesCryptocurrencies) {
-                    Asset asset = ((CryptocurrencyAPI) connectionAPI).getAssetData(nameCrypto);
-                    assets.add(asset);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public List<String> getNamesCryptocurrencies() {
+        return namesCryptocurrencies;
+    }
 
-            System.out.println("Assets:\n ");
-            assets.forEach(v -> System.out.println(v.getData().getName() + " " + v.getData().getPriceUsd()));
-            System.out.println("\n");
-
-            System.out.println("Notifying observers...\n");
-            notifyObservers();
-        }, 0, TIME_TO_NOTIFY, TimeUnit.SECONDS);
-
-        try {
-            scheduledFuture.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            executorService.shutdown();
-        }
+    public IConnectionAPI getConnectionAPI() {
+        return connectionAPI;
     }
 }

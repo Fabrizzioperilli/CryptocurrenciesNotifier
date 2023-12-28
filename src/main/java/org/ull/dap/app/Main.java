@@ -9,6 +9,6 @@ public class Main {
     public static void main(String[] args) {
         CryptocurrencyNotifier cryptocurrencyNotifier = new CryptocurrencyNotifier();
         IView frame = new MainView(cryptocurrencyNotifier);
-        AppController appController = new AppController(cryptocurrencyNotifier, frame);
+        new AppController(cryptocurrencyNotifier, frame);
     }
 }
