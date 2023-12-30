@@ -1,15 +1,16 @@
-package org.ull.dap.app.views;
+package org.ull.dap.app.views.desktop;
+
+import org.ull.dap.app.views.INotification;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Notification extends JFrame implements INotification {
+public class DesktopNotification extends JFrame implements INotification {
 
     private boolean changeColor;
     private JPanel notificationPanel;
@@ -20,7 +21,7 @@ public class Notification extends JFrame implements INotification {
     private JScrollPane scrollPaneCrypto;
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
 
-    public Notification() {
+    public DesktopNotification() {
         initializeUI();
         JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

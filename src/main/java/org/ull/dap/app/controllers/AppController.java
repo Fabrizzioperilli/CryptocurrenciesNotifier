@@ -5,16 +5,13 @@ import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 import org.ull.dap.app.views.INotification;
 import org.ull.dap.app.views.IView;
-import org.ull.dap.app.views.MainView;
+import org.ull.dap.app.views.desktop.DesktopView;
 
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -61,15 +58,15 @@ public class AppController implements ActionListener {
     }
 
     private void handleLogin() {
-        String[] usersSelected = view.getUsersSelected();
+        List<String> usersSelected = view.getUsersSelected();
 
-        if (usersSelected.length < 1) {
+        if (usersSelected.size() < 1) {
             JOptionPane.showMessageDialog(null, "You must select at least 1 users", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         view.setUsersSelected(usersSelected);
-        System.out.println(Arrays.toString(view.getUsersSelected()));
-        ((MainView) view).nextWindow();
+        System.out.println(view.getUsersSelected());
+        ((DesktopView) view).nextWindow();
     }
 
     private void handleStart() {
@@ -94,14 +91,14 @@ public class AppController implements ActionListener {
         JOptionPane.showMessageDialog(null, "You must select at least 1 crypto for each user", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void suscribeUsers(String[] usersSelected) {
-        for (int i = 0; i < usersSelected.length; i++) {
-            notifier.subscribe(new User(usersSelected[i], i, new ArrayList<>()));
+    public void suscribeUsers(List<String>usersSelected) {
+        for (int i = 0; i < usersSelected.size(); i++) {
+            notifier.subscribe(new User(usersSelected.get(i), i, new ArrayList<>()));
         }
     }
 
     public boolean checkAllUsersHaveCryptos() {
-        for (int i = 0; i < view.getUsersSelected().length; i++) {
+        for (int i = 0; i < view.getUsersSelected().size(); i++) {
             if (notifier.getObservers().get(i).getNameCryptos().size() < 1) {
                 return false;
             }
@@ -134,9 +131,9 @@ public class AppController implements ActionListener {
 
             for (int i = 0; i < notifier.getObservers().size(); i++) {
                 IObserver user = notifier.getObservers().get(i);
-                notificationsWithUsers.get(user).createNotify(((User)user).getMessagesToNotify());
+                notificationsWithUsers.get(user).createNotify(user.getMessagesToNotify());
             }
-            notifier.getObservers().forEach(v -> ((User) v).getMessagesToNotify().clear());
+            notifier.getObservers().forEach(v -> v.getMessagesToNotify().clear());
             System.out.println("\n");
         }, 0, 40, TimeUnit.SECONDS);
     }
@@ -165,14 +162,14 @@ public class AppController implements ActionListener {
     }
 
     private void handleCryptoOperation(String name, IObserver observer, boolean isDelete, String action) {
-        if (((User) observer).getName().equals(((MainView) view).getComboBoxUsersSelected().getSelectedItem())) {
+        if (observer.getName().equals(((DesktopView) view).getComboBoxUsersSelected().getSelectedItem())) {
             if (isDelete == observer.getNameCryptos().contains(name)) {
                 if (isDelete) {
                     observer.deleteCrypto(name);
                 } else {
                     observer.addCrypto(name);
                 }
-                System.out.println(action + " " + name + " to " + ((User) observer).getName());
+                System.out.println(action + " " + name + " to " + observer.getName());
                 view.enableButtons(name, isDelete);
             }
         }

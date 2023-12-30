@@ -10,4 +10,8 @@ public interface IObserver {
     void addCrypto(String name);
     void deleteCrypto(String name);
     List<String> getNameCryptos();
+
+    List<String> getMessagesToNotify();
+
+    String getName();
 }

@@ -1,7 +1,6 @@
 package org.ull.dap.app.models.users;
 
 import org.ull.dap.app.models.entities.Asset;
-import org.ull.dap.app.views.Notification;
 
 import java.util.*;
 

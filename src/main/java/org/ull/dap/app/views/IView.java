@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface IView {
 
-    String[] getUsersSelected();
+    List<String> getUsersSelected();
 
-    void setUsersSelected(String[] usersSelected);
+    void setUsersSelected(List<String> usersSelected);
 
     void enableButtons(String name, boolean enable);
 
