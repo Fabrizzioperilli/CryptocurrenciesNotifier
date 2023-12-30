@@ -1,11 +1,9 @@
 package org.ull.dap.app.models.users;
 
+import org.ull.dap.app.models.entities.Asset;
 import org.ull.dap.app.views.Notification;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class User implements IObserver {
 
@@ -14,7 +12,7 @@ public class User implements IObserver {
     private List<String> nameCryptos;
     private Map<String, Double> cryptoPrices;
 
-    private Notification v;
+    private List<String> messagesToNotify;
 
     public User() {}
 
@@ -23,6 +21,7 @@ public class User implements IObserver {
         this.id = id;
         this.nameCryptos = nameCryptos;
         this.cryptoPrices = new HashMap<>();
+        this.messagesToNotify = new ArrayList<>();
 
         for (String nameCrypto : nameCryptos) {
             cryptoPrices.put(nameCrypto, -1.0);
@@ -30,11 +29,12 @@ public class User implements IObserver {
     }
 
     @Override
-    public void update(String nameCrypto, double newPrice) {
+    public void update(Asset asset) {
+        String nameCrypto = asset.getData().getName();
+        double newPrice = asset.getData().getPriceUsd();
         cryptoPrices.put(nameCrypto, newPrice);
-        System.out.println(name + " has been notified about " + nameCrypto +
-                ", the price has changed to: " + cryptoPrices.get(nameCrypto) + " USD");
-        v.createNotify(name, nameCrypto, newPrice);
+        String messageNotify  = "  " + name + ", [" + nameCrypto + "] price has changed to: " + newPrice + " USD";
+        messagesToNotify.add(messageNotify);
     }
 
     @Override
@@ -71,11 +71,7 @@ public class User implements IObserver {
         return name;
     }
 
-    public void setNotification(Notification v) {
-        this.v = v;
-    }
-
-    public Notification getNotification() {
-        return v;
+    public List<String> getMessagesToNotify() {
+        return messagesToNotify;
     }
 }

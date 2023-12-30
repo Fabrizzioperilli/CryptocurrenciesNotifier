@@ -21,7 +21,7 @@ public class CryptocurrencyNotifier implements Observable {
 
     private final List<Asset> assets;
 
-    private final int TIME_TO_NOTIFY = 40;
+    private final int TIME_TO_NOTIFY = 10;
 
     public CryptocurrencyNotifier() {
         this.observers = new ArrayList<>();
@@ -58,7 +58,7 @@ public class CryptocurrencyNotifier implements Observable {
                     Double currentPrice = asset.getData().getPriceUsd();
 
                     if (!Objects.equals(previousPrice, currentPrice)) {
-                        observer.update(assetId, currentPrice);
+                        observer.update(asset);
                         cryptoPrices.put(assetId, currentPrice);
                     }
                 }

@@ -3,15 +3,18 @@ package org.ull.dap.app.controllers;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
+import org.ull.dap.app.views.INotification;
 import org.ull.dap.app.views.IView;
 import org.ull.dap.app.views.MainView;
-import org.ull.dap.app.views.Notification;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -23,9 +26,12 @@ public class AppController implements ActionListener {
 
     private IView view;
 
+    private final Map<IObserver, INotification> notificationsWithUsers;
+
     public AppController(CryptocurrencyNotifier notifier, IView view) {
         this.notifier = notifier;
         this.view = view;
+        this.notificationsWithUsers = new HashMap<>();
     }
 
     public CryptocurrencyNotifier getNotifier() {
@@ -106,11 +112,11 @@ public class AppController implements ActionListener {
 
     public void start() {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-        for (IObserver observer : notifier.getObservers()) {
-            ((User) observer).setNotification(new Notification());
-            ((User) observer).getNotification().setVisible(true);
+        for (int i = 0; i < notifier.getObservers().size(); i++) {
+            IObserver user = notifier.getObservers().get(i);
+            INotification notification = view.getNotifications().get(i);
+            notificationsWithUsers.put(user,notification);
         }
-
         ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(() -> {
             notifier.getAssets().clear();
             try {
@@ -123,13 +129,20 @@ public class AppController implements ActionListener {
 
             System.out.println("Assets:\n ");
             notifier.getAssets().forEach(v -> System.out.println(v.getData().getName() + " " + v.getData().getPriceUsd()));
+
             notifier.notifyObservers();
+
+            for (int i = 0; i < notifier.getObservers().size(); i++) {
+                IObserver user = notifier.getObservers().get(i);
+                notificationsWithUsers.get(user).createNotify(((User)user).getMessagesToNotify());
+            }
+            notifier.getObservers().forEach(v -> ((User) v).getMessagesToNotify().clear());
             System.out.println("\n");
         }, 0, 40, TimeUnit.SECONDS);
     }
 
     private void startBackground() {
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
                 start();
@@ -164,4 +177,6 @@ public class AppController implements ActionListener {
             }
         }
     }
+
+
 }

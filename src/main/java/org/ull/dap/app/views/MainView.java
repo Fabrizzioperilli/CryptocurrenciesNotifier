@@ -8,6 +8,8 @@ import org.ull.dap.app.models.users.User;
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainView extends JFrame implements IView {
@@ -26,9 +28,12 @@ public class MainView extends JFrame implements IView {
     private JPanel contentPane, panel, pnSelCrypto;
     private final AppController controller;
     private String[] usersSelected;
+    private String[] usersAvailable;
+    private List <INotification> notifications;
 
     public MainView(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
+        this.notifications = new ArrayList<>();
         initializeUI();
     }
 
@@ -92,9 +97,10 @@ public class MainView extends JFrame implements IView {
         if (usersList != null) {
             return usersList;
         }
-        String[] usersAvailable = new String[]{"María", "Luis", "Daniela", "Luis"};
+        this.usersAvailable = new String[]{"María", "Luis", "Daniela", "Luis"};
         this.usersList = new JList<>(usersAvailable);
         usersList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
         return usersList;
     }
 
@@ -375,6 +381,16 @@ public class MainView extends JFrame implements IView {
     }
 
     @Override
+    public List<INotification> getNotifications() {
+        if (usersSelected != null) {
+            for (int i = 0; i < usersSelected.length; i++) {
+                this.notifications.add(new Notification());
+            }
+        }
+        return notifications;
+    }
+
+    @Override
     public void setUsersSelected(String[] usersSelected) {
         this.usersSelected = usersSelected;
     }
@@ -388,6 +404,8 @@ public class MainView extends JFrame implements IView {
         btnStart.setFont(new Font("Tahoma", Font.BOLD, 20));
         btnStart.setActionCommand("START");
         btnStart.addActionListener(controller);
+
+
         btnStart.setBounds(183, 25, 92, 54);
         return btnStart;
     }
@@ -435,4 +453,6 @@ public class MainView extends JFrame implements IView {
             }
         }
     }
+
+
 }
