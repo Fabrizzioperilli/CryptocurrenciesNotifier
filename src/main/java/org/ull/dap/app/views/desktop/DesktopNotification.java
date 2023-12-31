@@ -116,7 +116,6 @@ public class DesktopNotification extends JFrame implements INotification {
 
     @Override
     public void createNotify(List<String> messages) {
-        System.out.println("Create notify");
         for (String message : messages) {
             JPanel p = new JPanel();
             setVisible(true);

@@ -9,8 +9,8 @@ import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 public class Main {
     public static void main(String[] args) {
         CryptocurrencyNotifier cryptocurrencyNotifier = new CryptocurrencyNotifier();
-//        IView frame = new DesktopView(cryptocurrencyNotifier);
-        IView frame  = new CLIView(cryptocurrencyNotifier);
+        IView frame = new DesktopView(cryptocurrencyNotifier);
+//        IView frame  = new CLIView(cryptocurrencyNotifier);
         new AppController(cryptocurrencyNotifier, frame);
     }
 }

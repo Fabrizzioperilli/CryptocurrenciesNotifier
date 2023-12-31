@@ -64,15 +64,13 @@ public class AppController implements ActionListener {
             JOptionPane.showMessageDialog(null, "You must select at least 1 users", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        view.setUsersSelected(usersSelected);
-        System.out.println(view.getUsersSelected());
-        ((DesktopView) view).nextWindow();
+        suscribeUsers(usersSelected);
+        view.windowSelectCryptos();
     }
 
     private void handleStart() {
         if (checkAllUsersHaveCryptos()) {
-            System.out.println("All users have cryptos");
-            startBackground();
+            start();
         } else {
             showError();
         }
@@ -124,9 +122,6 @@ public class AppController implements ActionListener {
                 e.printStackTrace();
             }
 
-            System.out.println("Assets:\n ");
-            notifier.getAssets().forEach(v -> System.out.println(v.getData().getName() + " " + v.getData().getPriceUsd()));
-
             notifier.notifyObservers();
 
             for (int i = 0; i < notifier.getObservers().size(); i++) {
@@ -134,28 +129,18 @@ public class AppController implements ActionListener {
                 notificationsWithUsers.get(user).createNotify(user.getMessagesToNotify());
             }
             notifier.getObservers().forEach(v -> v.getMessagesToNotify().clear());
-            System.out.println("\n");
+
         }, 0, 40, TimeUnit.SECONDS);
     }
 
-    private void startBackground() {
-        SwingWorker<Void, Void> worker = new SwingWorker<>() {
-            @Override
-            protected Void doInBackground() {
-                start();
-                return null;
-            }
-        };
-        worker.execute();
-    }
 
-    private void addCrypto(String name) {
+    public void addCrypto(String name) {
         for (IObserver observer : notifier.getObservers()) {
             handleCryptoOperation(name, observer, false, "Added");
         }
     }
 
-    private void deleteCrypto(String name) {
+    public void deleteCrypto(String name) {
         for (IObserver observer : notifier.getObservers()) {
             handleCryptoOperation(name, observer, true, "Deleted");
         }

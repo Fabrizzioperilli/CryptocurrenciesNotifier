@@ -123,8 +123,8 @@ public class DesktopView extends JFrame implements IView {
         return panel;
     }
 
-    public void nextWindow() {
-        controller.suscribeUsers(usersSelected);
+    @Override
+    public void windowSelectCryptos() {
         CardLayout cl = (CardLayout) (contentPane.getLayout());
         cl.show(contentPane, "SELECT_CRYPTO");
         fillComboBoxUsers();
@@ -393,7 +393,6 @@ public class DesktopView extends JFrame implements IView {
         return notifications;
     }
 
-    @Override
     public void setUsersSelected(List<String> usersSelected) {
         this.usersSelected = usersSelected;
     }
