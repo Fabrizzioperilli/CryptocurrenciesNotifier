@@ -6,7 +6,6 @@ import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 import org.ull.dap.app.views.INotification;
 import org.ull.dap.app.views.IView;
-import org.ull.dap.app.views.desktop.DesktopNotification;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DesktopView extends JFrame implements IView {
+public class ViewDesktop extends JFrame implements IView {
 
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
     public static final String ROUTE_IMAGE_BITCOIN = "/images/bitcoin.png";
@@ -31,13 +30,15 @@ public class DesktopView extends JFrame implements IView {
     private JPanel contentPane, panel, pnSelCrypto;
     private final AppController controller;
     private List<String> usersSelected;
-    private String[] usersAvailable;
+    private List<String> usersAvailable;
     private List <INotification> notifications;
 
-    public DesktopView(CryptocurrencyNotifier model) {
+    private DashboardDesktop dashboardDesktop;
+
+    public ViewDesktop(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
-        this.usersAvailable = new String[]{"User1", "User2", "User3", "User4"};
+        this.usersAvailable = controller.getUsersAvailable();
         initializeUI();
     }
 
@@ -101,7 +102,7 @@ public class DesktopView extends JFrame implements IView {
         if (usersList != null) {
             return usersList;
         }
-        this.usersList = new JList<>(usersAvailable);
+        this.usersList = new JList<>(usersAvailable.toArray(new String[0]));
         usersList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         return usersList;
@@ -387,7 +388,7 @@ public class DesktopView extends JFrame implements IView {
     public List<INotification> getNotifications() {
         if (usersSelected != null) {
             for (int i = 0; i < usersSelected.size(); i++) {
-                this.notifications.add(new DesktopNotification());
+                this.notifications.add(new NotificationDesktop());
             }
         }
         return notifications;
@@ -395,6 +396,14 @@ public class DesktopView extends JFrame implements IView {
 
     public void setUsersSelected(List<String> usersSelected) {
         this.usersSelected = usersSelected;
+    }
+
+    public void setDashboardDesktop(DashboardDesktop dashboardDesktop) {
+        this.dashboardDesktop = dashboardDesktop;
+    }
+
+    public DashboardDesktop getDashboardDesktop() {
+        return dashboardDesktop;
     }
 
     private JButton getBtnStart() {

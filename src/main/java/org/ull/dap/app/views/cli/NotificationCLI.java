@@ -4,13 +4,13 @@ import org.ull.dap.app.views.INotification;
 
 import java.util.List;
 
-public class CLINotification implements INotification {
+public class NotificationCLI implements INotification {
 
-    public CLINotification() {
+    public NotificationCLI() {
 
     }
     @Override
-    public void createNotify(List<String> messages) {
+    public void showNotification(List<String> messages) {
         System.out.println("--------------------------------------------------------------------");
         System.out.println("Notification: ");
         for (String message : messages) {

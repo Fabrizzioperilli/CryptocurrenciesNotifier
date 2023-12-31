@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DesktopNotification extends JFrame implements INotification {
+public class NotificationDesktop extends JFrame implements INotification {
 
     private boolean changeColor;
     private JPanel notificationPanel;
@@ -21,7 +21,7 @@ public class DesktopNotification extends JFrame implements INotification {
     private JScrollPane scrollPaneCrypto;
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
 
-    public DesktopNotification() {
+    public NotificationDesktop() {
         initializeUI();
         JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -115,7 +115,7 @@ public class DesktopNotification extends JFrame implements INotification {
     }
 
     @Override
-    public void createNotify(List<String> messages) {
+    public void showNotification(List<String> messages) {
         for (String message : messages) {
             JPanel p = new JPanel();
             setVisible(true);

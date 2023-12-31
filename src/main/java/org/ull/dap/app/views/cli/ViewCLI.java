@@ -10,20 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CLIView implements IView {
+public class ViewCLI implements IView {
 
     private final AppController controller;
 
     private List<INotification> notifications;
 
-    private String[]usersAvailable;
+    private List <String> usersAvailable;
 
     private List<String> usersSelected;
 
-    public CLIView(CryptocurrencyNotifier model) {
+    public ViewCLI(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
-        this.usersAvailable = new String[]{"User1", "User2", "User3", "User4"};
+        this.usersAvailable = controller.getUsersAvailable();
         this.usersSelected = new ArrayList<>();
         menuUsers();
     }
@@ -35,7 +35,7 @@ public class CLIView implements IView {
         Scanner scanner = new Scanner(System.in);
         int numUsers = scanner.nextInt();
 
-        if (numUsers > usersAvailable.length) {
+        if (numUsers > usersAvailable.size()) {
             System.out.println("The number of users selected is greater than the number of users available");
             System.exit(-1);
         }
@@ -45,10 +45,10 @@ public class CLIView implements IView {
             showUsersAvailable();
             System.out.print("Number: ");
             int index = scanner.nextInt() - 1;
-            if (index >= 0 && index < usersAvailable.length) {
-                if (!usersSelected.contains(usersAvailable[index])) {
-                    System.out.println( usersAvailable[index] + " selected successfully !!");
-                    usersSelected.add(usersAvailable[index]);
+            if (index >= 0 && index < usersAvailable.size()) {
+                if (!usersSelected.contains(usersAvailable.get(index))) {
+                    System.out.println( usersAvailable.get(index) + " selected successfully !!");
+                    usersSelected.add(usersAvailable.get(index));
                 } else {
                     System.out.println("The user has already been selected");
                 }
@@ -66,9 +66,9 @@ public class CLIView implements IView {
 
     public void showUsersAvailable() {
         int count;
-        for (int i = 0; i < usersAvailable.length; i++) {
+        for (int i = 0; i < usersAvailable.size(); i++) {
             count = i + 1;
-            System.out.println("[" + count + "] " + usersAvailable[i]);
+            System.out.println("[" + count + "] " + usersAvailable.get(i));
         }
     }
 
@@ -77,10 +77,6 @@ public class CLIView implements IView {
         return usersSelected;
     }
 
-
-    public void setUsersSelected(List<String> usersSelected) {
-        this.usersSelected = usersSelected;
-    }
 
     @Override
     public void enableButtons(String name, boolean enable) {
@@ -91,7 +87,7 @@ public class CLIView implements IView {
     public List<INotification> getNotifications() {
         if (usersSelected != null) {
             for (String userSelected : usersSelected) {
-                notifications.add(new CLINotification());
+                notifications.add(new NotificationCLI());
             }
         }
         return notifications;

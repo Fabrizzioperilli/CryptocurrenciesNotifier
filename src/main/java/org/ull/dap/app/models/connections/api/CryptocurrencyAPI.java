@@ -1,4 +1,4 @@
-package org.ull.dap.app.models.connections;
+package org.ull.dap.app.models.connections.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ull.dap.app.models.entities.Asset;

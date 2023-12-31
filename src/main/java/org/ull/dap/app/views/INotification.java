@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface INotification {
 
-    void createNotify(List<String> messages);
+    void showNotification(List<String> messages);
 }

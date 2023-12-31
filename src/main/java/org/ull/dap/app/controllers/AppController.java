@@ -1,11 +1,14 @@
 package org.ull.dap.app.controllers;
 
+import org.ull.dap.app.models.connections.csv.CSVReader;
+import org.ull.dap.app.models.connections.csv.Parser;
+import org.ull.dap.app.models.connections.csv.UsersParser;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 import org.ull.dap.app.views.INotification;
 import org.ull.dap.app.views.IView;
-import org.ull.dap.app.views.desktop.DesktopView;
+import org.ull.dap.app.views.desktop.ViewDesktop;
 
 
 import javax.swing.*;
@@ -14,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class AppController implements ActionListener {
@@ -25,10 +27,21 @@ public class AppController implements ActionListener {
 
     private final Map<IObserver, INotification> notificationsWithUsers;
 
+    private Parser usersParser;
+
+    private List<String> usersAvailable;
+
+    private final static String CSV_USERS_PATH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ4XyLOqWV2vg4r_LHPuq1Alm38Rb_WZG0-uvuH8vj-njMY2KqURrvgOKS-FtPIOe-sd2wOKfbJnDi/pub?output=csv";
+
     public AppController(CryptocurrencyNotifier notifier, IView view) {
         this.notifier = notifier;
         this.view = view;
         this.notificationsWithUsers = new HashMap<>();
+        usersParser = new UsersParser(new CSVReader(CSV_USERS_PATH));
+        usersAvailable = new ArrayList<>();
+        for (List<Object> row : usersParser.getData()) {
+            usersAvailable.add((String) row.get(0));
+        }
     }
 
     public CryptocurrencyNotifier getNotifier() {
@@ -37,6 +50,10 @@ public class AppController implements ActionListener {
 
     public void setNotifier(CryptocurrencyNotifier notifier) {
         this.notifier = notifier;
+    }
+
+    public List<String> getUsersAvailable() {
+        return usersAvailable;
     }
 
     public IView getView() {
@@ -112,7 +129,7 @@ public class AppController implements ActionListener {
             INotification notification = view.getNotifications().get(i);
             notificationsWithUsers.put(user,notification);
         }
-        ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(() -> {
+        executorService.scheduleAtFixedRate(() -> {
             notifier.getAssets().clear();
             try {
                 for (String nameCrypto : notifier.getNamesCryptocurrencies()) {
@@ -123,10 +140,13 @@ public class AppController implements ActionListener {
             }
 
             notifier.notifyObservers();
+            if (view instanceof ViewDesktop) {
+                System.out.println("Hola soy una instancia de ViewDesktop");
+            }
 
             for (int i = 0; i < notifier.getObservers().size(); i++) {
                 IObserver user = notifier.getObservers().get(i);
-                notificationsWithUsers.get(user).createNotify(user.getMessagesToNotify());
+                notificationsWithUsers.get(user).showNotification(user.getMessagesToNotify());
             }
             notifier.getObservers().forEach(v -> v.getMessagesToNotify().clear());
 
@@ -147,7 +167,7 @@ public class AppController implements ActionListener {
     }
 
     private void handleCryptoOperation(String name, IObserver observer, boolean isDelete, String action) {
-        if (observer.getName().equals(((DesktopView) view).getComboBoxUsersSelected().getSelectedItem())) {
+        if (observer.getName().equals(((ViewDesktop) view).getComboBoxUsersSelected().getSelectedItem())) {
             if (isDelete == observer.getNameCryptos().contains(name)) {
                 if (isDelete) {
                     observer.deleteCrypto(name);

@@ -1,4 +1,4 @@
-package org.ull.dap.app.models.connections;
+package org.ull.dap.app.models.connections.api;
 
 import org.ull.dap.app.models.entities.Asset;
 
