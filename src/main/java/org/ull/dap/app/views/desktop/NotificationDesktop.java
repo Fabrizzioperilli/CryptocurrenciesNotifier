@@ -128,11 +128,11 @@ public class NotificationDesktop extends JFrame implements INotification {
             }
             p.setLayout(new BorderLayout(0, 0));
 
-            JLabel l_text = new JLabel(message);
+            JLabel l_text = new JLabel("<html>" + message.replace("\n", "<br>") + "</html>");
             JLabel l_image = new JLabel();
             ImageIcon i = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/" + extractNameCrypto(message) + ".png")));
             l_image.setIcon(resizeIcon(i, 35, 35));
-            l_text.setFont(new Font("Arial", Font.BOLD, 14));
+            l_text.setFont(new Font("Arial", Font.BOLD, 16));
             p.add(l_text, BorderLayout.CENTER);
             p.add(l_image, BorderLayout.EAST);
             cryptoPanel.add(p);

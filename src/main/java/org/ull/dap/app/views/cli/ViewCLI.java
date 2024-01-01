@@ -5,8 +5,11 @@ import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.views.INotification;
 import org.ull.dap.app.views.IView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,15 +19,15 @@ public class ViewCLI implements IView {
 
     private List<INotification> notifications;
 
-    private List <String> usersAvailable;
+    private List<String> usersAvailable;
 
     private List<String> usersSelected;
 
     public ViewCLI(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
-        this.usersAvailable = controller.getUsersAvailable();
         this.usersSelected = new ArrayList<>();
+        this.usersAvailable = Arrays.asList("User1", "User2", "User3", "User4", "User5");
         menuUsers();
     }
 
@@ -47,7 +50,7 @@ public class ViewCLI implements IView {
             int index = scanner.nextInt() - 1;
             if (index >= 0 && index < usersAvailable.size()) {
                 if (!usersSelected.contains(usersAvailable.get(index))) {
-                    System.out.println( usersAvailable.get(index) + " selected successfully !!");
+                    System.out.println(usersAvailable.get(index) + " selected successfully !!");
                     usersSelected.add(usersAvailable.get(index));
                 } else {
                     System.out.println("The user has already been selected");
@@ -59,7 +62,7 @@ public class ViewCLI implements IView {
         controller.actionPerformed(new ActionEvent(this, 0, "LOGIN"));
     }
 
-    private void showSubscribers() {
+    public void showSubscribers() {
         System.out.print("Users logged: ");
         System.out.println(controller.getNotifier().getObservers());
     }
@@ -125,8 +128,8 @@ public class ViewCLI implements IView {
                 }
             }
         }
-        controller.getNotifier().getObservers().forEach(observer -> System.out.print(observer.getName() + " selected cryptos: " + observer.getNameCryptos() + "\n"));
         controller.actionPerformed(new ActionEvent(this, 0, "START"));
+        controller.getNotifier().getObservers().forEach(observer -> System.out.print(observer.getName() + " selected cryptos: " + observer.getNameCryptos() + "\n"));
     }
 
     void showListCryptos() {

@@ -106,7 +106,7 @@ public class AppController implements ActionListener {
         JOptionPane.showMessageDialog(null, "You must select at least 1 crypto for each user", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public void suscribeUsers(List<String>usersSelected) {
+    public void suscribeUsers(List<String> usersSelected) {
         for (int i = 0; i < usersSelected.size(); i++) {
             notifier.subscribe(new User(usersSelected.get(i), i, new ArrayList<>()));
         }
@@ -127,7 +127,7 @@ public class AppController implements ActionListener {
         for (int i = 0; i < notifier.getObservers().size(); i++) {
             IObserver user = notifier.getObservers().get(i);
             INotification notification = view.getNotifications().get(i);
-            notificationsWithUsers.put(user,notification);
+            notificationsWithUsers.put(user, notification);
         }
         executorService.scheduleAtFixedRate(() -> {
             notifier.getAssets().clear();
