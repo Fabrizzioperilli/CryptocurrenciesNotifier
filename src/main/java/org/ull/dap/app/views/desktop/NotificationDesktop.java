@@ -1,10 +1,18 @@
 package org.ull.dap.app.views.desktop;
 
+import org.ull.dap.app.Main;
+import org.ull.dap.app.controllers.AppController;
+import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.views.INotification;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -108,13 +116,13 @@ public class NotificationDesktop extends JFrame implements INotification {
     private JPanel getCryptoPanel() {
         if (cryptoPanel == null) {
             cryptoPanel = new JPanel();
-            cryptoPanel.setLayout(new GridLayout(100, 0, 0, 0));
+            cryptoPanel.setLayout(new GridLayout(10000, 0, 0, 0));
         }
         return cryptoPanel;
     }
 
     @Override
-    public void showNotification(List<String> messages) {
+    public void showNotification(List<String> messages, Map<String, String> cryptoNameImage) {
         for (String message : messages) {
             JPanel p = new JPanel();
             setVisible(true);
@@ -126,16 +134,23 @@ public class NotificationDesktop extends JFrame implements INotification {
                 changeColor = false;
             }
             p.setLayout(new BorderLayout(0, 0));
-
             JLabel l_text = new JLabel("<html>" + message.replace("\n", "<br>") + "</html>");
-            JLabel l_image = new JLabel();
-            ImageIcon i = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/" + extractNameCrypto(message) + ".png")));
-            l_image.setIcon(resizeIcon(i, 35, 35));
-            l_text.setFont(new Font("Arial", Font.BOLD, 16));
-            p.add(l_text, BorderLayout.CENTER);
-            p.add(l_image, BorderLayout.EAST);
-            cryptoPanel.add(p);
+            JLabel imageLabel = new JLabel();
+            String nameCrypto = extractNameCrypto(message);
+            try {
+                BufferedImage image = ImageIO.read(new URL(cryptoNameImage.get(nameCrypto)));
+                Image scaledImage = image.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                ImageIcon icon = new ImageIcon(scaledImage);
+                imageLabel.setIcon(icon);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            l_text.setFont(new Font("Arial", Font.BOLD, 16));
+            p.add(imageLabel, BorderLayout.EAST);
+            p.add(l_text, BorderLayout.CENTER);
+
+            cryptoPanel.add(p);
         }
         cryptoPanel.revalidate();
         cryptoPanel.repaint();
@@ -145,9 +160,9 @@ public class NotificationDesktop extends JFrame implements INotification {
         String pattern = "\\[([^\\]]+)\\]";
         Pattern p = Pattern.compile(pattern);
 
-        Matcher m = p.matcher(message.toLowerCase());
+        Matcher m = p.matcher(message);
         if (m.find()) {
-            return m.group(1);
+            return m.group(1).substring(0, 1).toUpperCase() + m.group(1).substring(1).toLowerCase();
         }
         return null;
     }

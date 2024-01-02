@@ -29,11 +29,11 @@ public class User implements IObserver {
 
     @Override
     public void update(Asset asset) {
-        String nameCrypto = asset.getData().getName();
+        String nameCrypto = asset.getData().getId();
         double newPrice = asset.getData().getPriceUsd();
         double percentageChange = Math.round(asset.getData().getChangePercent24Hr() * 1000.0) / 1000.0;
         cryptoPrices.put(nameCrypto, newPrice);
-        String messageNotify  = "  " + name + ", [" + nameCrypto + "]. New price:   " + newPrice + " USD\n" +
+        String messageNotify  = "  " + name + " [" + nameCrypto + "]. New price:   " + newPrice + " USD\n" +
                 "  Change percentage 24h:   " + percentageChange + "%\n";
         messagesToNotify.add(messageNotify);
     }

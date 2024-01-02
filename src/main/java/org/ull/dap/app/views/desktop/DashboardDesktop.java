@@ -17,6 +17,9 @@ import org.ull.dap.app.models.entities.Asset;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
+
+import static org.ull.dap.app.views.desktop.ViewDesktop.ROUTE_IMAGE_LOGO;
 
 public class DashboardDesktop extends JFrame {
 
@@ -43,21 +46,21 @@ public class DashboardDesktop extends JFrame {
         // Crear gráficas
         JFreeChart bitcoinChart = ChartFactory.createTimeSeriesChart(
                 "Bitcoin",
-                "Tiempo",
-                "Precio",
+                "Time",
+                "Price (USD)",
                 bitcoinDataset
         );
 
         JFreeChart ethereumChart = ChartFactory.createTimeSeriesChart(
                 "Ethereum",
-                "Tiempo",
-                "Precio",
+                "Time",
+                "Price (USD)",
                 ethereumDataset
         );
 
 
         JFreeChart pieChart = ChartFactory.createPieChart(
-                "Acciones en circulación",
+                "Supply",
                 datasetPieChart,
                 true,
                 true,
@@ -65,13 +68,11 @@ public class DashboardDesktop extends JFrame {
         );
 
         JFreeChart barChart = ChartFactory.createBarChart(
-                "Porcentaje de cambio de 24h",
-                "Activos",
-                "Porcentaje",
+                "Change 24h",
+                "Assets",
+                "Percentage %",
                 datasetBarChart
         );
-
-        // Personalizar el eje X para mostrar fechas de manera más clara
 
         customizeChartAxis(bitcoinChart);
         customizeChartAxis(ethereumChart);
@@ -100,6 +101,7 @@ public class DashboardDesktop extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setSize(1500, 700);
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LOGO))).getImage());
     }
 
     private void customizeChartAxis(JFreeChart chart) {
@@ -118,7 +120,6 @@ public class DashboardDesktop extends JFrame {
     }
 
     public void updateData(List<Asset> assets) {
-        // Actualizar datos de las gráficas con los nuevos datos de la API
         long currentTime = System.currentTimeMillis();
         for (Asset asset : assets) {
             if ("bitcoin".equals(asset.getData().getId())) {
@@ -127,7 +128,7 @@ public class DashboardDesktop extends JFrame {
                 ethereumSeries.addOrUpdate(currentTime, asset.getData().getPriceUsd());
             }
             datasetPieChart.setValue(asset.getData().getName(), asset.getData().getSupply());
-            datasetBarChart.setValue(asset.getData().getChangePercent24Hr(), "Porcentaje", asset.getData().getName());
+            datasetBarChart.setValue(asset.getData().getChangePercent24Hr(), "", asset.getData().getName());
         }
     }
 }

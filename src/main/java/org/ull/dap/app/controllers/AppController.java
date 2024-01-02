@@ -3,7 +3,6 @@ package org.ull.dap.app.controllers;
 import org.ull.dap.app.models.connections.csv.CSVReader;
 import org.ull.dap.app.models.connections.csv.Parser;
 import org.ull.dap.app.models.connections.csv.UsersParser;
-import org.ull.dap.app.models.entities.Asset;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
@@ -70,8 +69,7 @@ public class AppController implements ActionListener {
         switch (e.getActionCommand()) {
             case "LOGIN" -> handleLogin();
             case "START" -> handleStart();
-            case "ADD_BITCOIN", "DELETE_BITCOIN", "ADD_ETHEREUM", "DELETE_ETHEREUM", "ADD_LITECOIN", "DELETE_LITECOIN", "ADD_CARDANO", "DELETE_CARDANO" ->
-                    handleCryptoAction(e.getActionCommand());
+            default -> handleCryptoAction(e.getActionCommand());
         }
     }
 
@@ -142,13 +140,12 @@ public class AppController implements ActionListener {
 
             notifier.notifyObservers();
             if (view instanceof ViewDesktop) {
-                System.out.println("Hola soy una instancia de ViewDesktop");
                 ((ViewDesktop) view).getDashboardDesktop().updateData(notifier.getAssets());
             }
 
             for (int i = 0; i < notifier.getObservers().size(); i++) {
                 IObserver user = notifier.getObservers().get(i);
-                notificationsWithUsers.get(user).showNotification(user.getMessagesToNotify());
+                notificationsWithUsers.get(user).showNotification(user.getMessagesToNotify(), notifier.getCryptoNameImage());
             }
             notifier.getObservers().forEach(v -> v.getMessagesToNotify().clear());
 

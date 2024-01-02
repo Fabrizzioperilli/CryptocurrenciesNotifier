@@ -2,14 +2,14 @@ package org.ull.dap.app.models.notifiers;
 
 import org.ull.dap.app.models.connections.api.CryptocurrencyAPI;
 import org.ull.dap.app.models.connections.api.IConnectionAPI;
+import org.ull.dap.app.models.connections.csv.CSVReader;
+import org.ull.dap.app.models.connections.csv.CryptoParser;
+import org.ull.dap.app.models.connections.csv.Parser;
 import org.ull.dap.app.models.entities.Asset;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CryptocurrencyNotifier implements Observable {
 
@@ -21,12 +21,23 @@ public class CryptocurrencyNotifier implements Observable {
 
     private final List<Asset> assets;
 
-    private final int TIME_TO_NOTIFY = 10;
+    private final Parser cryptoParser;
+
+    private static final String CSV_CRYPTOS_PATH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlyyYAafZXld0_zAcs2GoH1PKTJGnQoLX9hIitkZUXObyRQ_MWbHKyOOa_7u4SKm0bVkYt190jtn9S/pub?output=csv";
+
+    private Map<String, String> cryptoNameImage;
 
     public CryptocurrencyNotifier() {
         this.observers = new ArrayList<>();
         this.connectionAPI = new CryptocurrencyAPI();
-        this.namesCryptocurrencies = List.of("bitcoin", "ethereum", "litecoin", "cardano");
+        this.cryptoParser = new CryptoParser(new CSVReader(CSV_CRYPTOS_PATH));
+        this.namesCryptocurrencies = new ArrayList<>();
+        this.cryptoNameImage = new HashMap<>();
+
+        for (List<Object> row : cryptoParser.getData()) {
+            this.namesCryptocurrencies.add(((String)row.get(0)).toLowerCase());
+            this.cryptoNameImage.put((String)row.get(0), (String)row.get(1));
+        }
         this.assets = new ArrayList<>();
     }
 
@@ -76,5 +87,9 @@ public class CryptocurrencyNotifier implements Observable {
 
     public IConnectionAPI getConnectionAPI() {
         return connectionAPI;
+    }
+
+    public Map<String, String> getCryptoNameImage() {
+        return cryptoNameImage;
     }
 }
