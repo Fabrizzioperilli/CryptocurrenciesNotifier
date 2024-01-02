@@ -39,6 +39,7 @@ public class ViewDesktop extends JFrame implements IView {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
         this.usersAvailable = controller.getUsersAvailable();
+        this.dashboardDesktop = new DashboardDesktop("Dashboard CryptoNotifier");
         initializeUI();
     }
 

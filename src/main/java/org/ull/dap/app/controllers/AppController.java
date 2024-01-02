@@ -3,6 +3,7 @@ package org.ull.dap.app.controllers;
 import org.ull.dap.app.models.connections.csv.CSVReader;
 import org.ull.dap.app.models.connections.csv.Parser;
 import org.ull.dap.app.models.connections.csv.UsersParser;
+import org.ull.dap.app.models.entities.Asset;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
@@ -142,6 +143,7 @@ public class AppController implements ActionListener {
             notifier.notifyObservers();
             if (view instanceof ViewDesktop) {
                 System.out.println("Hola soy una instancia de ViewDesktop");
+                ((ViewDesktop) view).getDashboardDesktop().updateData(notifier.getAssets());
             }
 
             for (int i = 0; i < notifier.getObservers().size(); i++) {
