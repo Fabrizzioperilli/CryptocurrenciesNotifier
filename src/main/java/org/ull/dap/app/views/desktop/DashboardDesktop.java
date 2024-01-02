@@ -72,11 +72,12 @@ public class DashboardDesktop extends JFrame {
         );
 
         // Personalizar el eje X para mostrar fechas de manera más clara
+
         customizeChartAxis(bitcoinChart);
         customizeChartAxis(ethereumChart);
 
-        customizeChartRenderer(bitcoinChart);
-        customizeChartRenderer(ethereumChart);
+        customizeChartRenderer(bitcoinChart, Color.WHITE);
+        customizeChartRenderer(ethereumChart, Color.BLUE);
 
         ChartPanel bitcoinPanel = new ChartPanel(bitcoinChart);
         ChartPanel ethereumPanel = new ChartPanel(ethereumChart);
@@ -85,12 +86,15 @@ public class DashboardDesktop extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(2, 3));
         panel.add(bitcoinPanel);
-        panel.add(ethereumPanel);
         panel.add(piePanel);
+        panel.add(ethereumPanel);
         panel.add(barPanel);
-
-        // Configurar la interfaz
         getContentPane().add(panel);
+
+        initializeUI();
+    }
+
+    private void initializeUI() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
@@ -105,10 +109,11 @@ public class DashboardDesktop extends JFrame {
         plot.setDomainAxis(dateAxis);
     }
 
-    private void customizeChartRenderer(JFreeChart chart) {
+    private void customizeChartRenderer(JFreeChart chart, Color color) {
         XYPlot plot = chart.getXYPlot();
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesStroke(0, new BasicStroke(3.0f)); // Grosor de la línea
+        renderer.setSeriesStroke(0, new BasicStroke(2.2f));
+        renderer.setSeriesPaint(0, color);
         plot.setRenderer(renderer);
     }
 
@@ -118,16 +123,11 @@ public class DashboardDesktop extends JFrame {
         for (Asset asset : assets) {
             if ("bitcoin".equals(asset.getData().getId())) {
                 bitcoinSeries.addOrUpdate(currentTime, asset.getData().getPriceUsd());
-                datasetPieChart.setValue("Bitcoin", asset.getData().getSupply());
-                datasetBarChart.setValue(asset.getData().getChangePercent24Hr(), "Porcentaje", "Bitcoin");
             } else if ("ethereum".equals(asset.getData().getId())) {
                 ethereumSeries.addOrUpdate(currentTime, asset.getData().getPriceUsd());
-                datasetPieChart.setValue("Ethereum", asset.getData().getSupply());
-                datasetBarChart.setValue(asset.getData().getChangePercent24Hr(), "Porcentaje", "Ethereum");
-            } else if ("litecoin".equals(asset.getData().getId())) {
-                datasetPieChart.setValue("Litecoin", asset.getData().getSupply());
-                datasetBarChart.setValue(asset.getData().getChangePercent24Hr(), "Porcentaje", "Litecoin");
             }
+            datasetPieChart.setValue(asset.getData().getName(), asset.getData().getSupply());
+            datasetBarChart.setValue(asset.getData().getChangePercent24Hr(), "Porcentaje", asset.getData().getName());
         }
     }
 }

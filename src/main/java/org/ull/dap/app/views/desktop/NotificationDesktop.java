@@ -33,7 +33,6 @@ public class NotificationDesktop extends JFrame implements INotification {
 
     private void initializeUI() {
         setTitle("Notify");
-        setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 570, 250);
         setLocationRelativeTo(null);
