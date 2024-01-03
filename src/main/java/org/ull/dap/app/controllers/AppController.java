@@ -155,25 +155,24 @@ public class AppController implements ActionListener {
 
     public void addCrypto(String name) {
         for (IObserver observer : notifier.getObservers()) {
-            handleCryptoOperation(name, observer, false, "Added");
+            handleCryptoOperation(name, observer, false);
         }
     }
 
     public void deleteCrypto(String name) {
         for (IObserver observer : notifier.getObservers()) {
-            handleCryptoOperation(name, observer, true, "Deleted");
+            handleCryptoOperation(name, observer, true);
         }
     }
 
-    private void handleCryptoOperation(String name, IObserver observer, boolean isDelete, String action) {
-        if (observer.getName().equals(((ViewDesktop) view).getComboBoxUsersSelected().getSelectedItem())) {
+    private void handleCryptoOperation(String name, IObserver observer, boolean isDelete) {
+        if (observer.getName().equals(view.getUserComboBoxString())) {
             if (isDelete == observer.getNameCryptos().contains(name)) {
                 if (isDelete) {
                     observer.deleteCrypto(name);
                 } else {
                     observer.addCrypto(name);
                 }
-                System.out.println(action + " " + name + " to " + observer.getName());
                 view.enableButtons(name, isDelete);
             }
         }

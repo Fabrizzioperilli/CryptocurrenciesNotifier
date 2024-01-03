@@ -11,4 +11,6 @@ public interface IView {
     List<INotification> getNotifications();
 
     void windowSelectCryptos();
+
+    String getUserComboBoxString();
 }

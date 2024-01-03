@@ -193,17 +193,13 @@ public class ViewDesktop extends JFrame implements IView {
         labelNameCrypto.setFont(new Font("Tahoma", Font.PLAIN, 16));
         labelNameCrypto.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-
         JLabel imageCrypto = createImageCrypto(linkImage);
-
 
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         btnDelete.setPreferredSize(new Dimension(50, 30));
         btnAdd.setPreferredSize(new Dimension(50, 30));
-
-
 
         panel.add(labelNameCrypto);
         panel.add(imageCrypto);
@@ -246,6 +242,10 @@ public class ViewDesktop extends JFrame implements IView {
         return comboBoxUsersSelected;
     }
 
+    public String getUserComboBoxString() {
+        return (String)comboBoxUsersSelected.getSelectedItem();
+    }
+
     @Override
     public List<String> getUsersSelected() {
         this.usersSelected = getListUsers().getSelectedValuesList();
@@ -283,9 +283,8 @@ public class ViewDesktop extends JFrame implements IView {
         btnStart.setFont(new Font("Tahoma", Font.BOLD, 20));
         btnStart.setActionCommand("START");
         btnStart.addActionListener(controller);
-
-
         btnStart.setBounds(205, 35, 92, 54);
+
         return btnStart;
     }
 

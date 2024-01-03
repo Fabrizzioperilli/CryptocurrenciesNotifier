@@ -10,7 +10,6 @@ public class User implements IObserver {
     private long id;
     private List<String> nameCryptos;
     private Map<String, Double> cryptoPrices;
-
     private List<String> messagesToNotify;
 
     public User() {}
@@ -49,7 +48,7 @@ public class User implements IObserver {
     }
 
     @Override
-    public void addCrypto(String name){
+    public void addCrypto(String name) {
         nameCryptos.add(name);
     }
 

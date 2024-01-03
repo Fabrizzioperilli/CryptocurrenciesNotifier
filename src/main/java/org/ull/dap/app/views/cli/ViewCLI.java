@@ -5,7 +5,6 @@ import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.views.INotification;
 import org.ull.dap.app.views.IView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 import java.util.ArrayList;
@@ -23,25 +22,30 @@ public class ViewCLI implements IView {
 
     private List<String> usersSelected;
 
+    private String currentUser;
+
     public ViewCLI(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
         this.usersSelected = new ArrayList<>();
-        this.usersAvailable = Arrays.asList("User1", "User2", "User3", "User4", "User5");
+        this.usersAvailable = controller.getUsersAvailable();
         menuUsers();
     }
 
     void menuUsers() {
         System.out.println("Available users: ");
         showUsersAvailable();
-        System.out.print("Enter the number of users you want to select: ");
         Scanner scanner = new Scanner(System.in);
-        int numUsers = scanner.nextInt();
+        int numUsers;
 
-        if (numUsers > usersAvailable.size()) {
-            System.out.println("The number of users selected is greater than the number of users available");
-            System.exit(-1);
-        }
+        do {
+            System.out.print("Enter the number of users you want to select: ");
+            numUsers = scanner.nextInt();
+
+            if (numUsers > usersAvailable.size()) {
+                System.out.println("The number of users selected is greater than the number of users available");
+            }
+        } while (numUsers > usersAvailable.size());
 
         while (numUsers > usersSelected.size()) {
             System.out.println("Enter the number of the user you want to select: ");
@@ -64,7 +68,7 @@ public class ViewCLI implements IView {
 
     public void showSubscribers() {
         System.out.print("Users logged: ");
-        System.out.println(controller.getNotifier().getObservers());
+        System.out.println(Arrays.toString(usersSelected.toArray()));
     }
 
     public void showUsersAvailable() {
@@ -100,16 +104,20 @@ public class ViewCLI implements IView {
     public void windowSelectCryptos() {
         showSubscribers();
         for (String userSelected : usersSelected) {
-            System.out.println("[ " + userSelected + " ]");
+            this.currentUser = userSelected;
+            System.out.println("[ " + currentUser + " ]");
             showListCryptos();
-            System.out.print("Enter the number of cryptos you want to select: ");
             Scanner scanner = new Scanner(System.in);
-            int numCryptos = scanner.nextInt();
+            int numCryptos;
 
-            if (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size()) {
-                System.out.println("The number of cryptos selected is greater than the number of cryptos available");
-                System.exit(-1);
-            }
+            do {
+                System.out.print("Enter the number of cryptos you want to select: ");
+                numCryptos = scanner.nextInt();
+
+                if (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size()) {
+                    System.out.println("The number of cryptos selected is greater than the number of cryptos available");
+                }
+            } while (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size());
 
             while (numCryptos > controller.getNotifier().getObservers().get(usersSelected.indexOf(userSelected)).getNameCryptos().size()) {
                 System.out.println("Enter the number of the crypto you want to select: ");
@@ -118,8 +126,8 @@ public class ViewCLI implements IView {
                 int index = scanner.nextInt() - 1;
                 if (index >= 0 && index < controller.getNotifier().getNamesCryptocurrencies().size()) {
                     if (!controller.getNotifier().getObservers().get(usersSelected.indexOf(userSelected)).getNameCryptos().contains(controller.getNotifier().getNamesCryptocurrencies().get(index))) {
-                        System.out.println(controller.getNotifier().getNamesCryptocurrencies().get(index) + " selected successfully !!");
-                        controller.getNotifier().getObservers().get(usersSelected.indexOf(userSelected)).addCrypto(controller.getNotifier().getNamesCryptocurrencies().get(index));
+                        System.out.println("Add " + controller.getNotifier().getNamesCryptocurrencies().get(index) + " successfully !!");
+                        controller.actionPerformed(new ActionEvent(this, 0, "ADD_" + controller.getNotifier().getNamesCryptocurrencies().get(index)));
                     } else {
                         System.out.println("The crypto has already been selected");
                     }
@@ -137,5 +145,10 @@ public class ViewCLI implements IView {
         for (int i = 0; i < controller.getNotifier().getNamesCryptocurrencies().size(); i++) {
             System.out.println("[" + (i + 1) + "] " + controller.getNotifier().getNamesCryptocurrencies().get(i));
         }
+    }
+
+    @Override
+    public String getUserComboBoxString() {
+        return currentUser;
     }
 }
