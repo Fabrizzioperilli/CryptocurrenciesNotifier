@@ -11,6 +11,9 @@ import org.ull.dap.app.models.users.User;
 
 import java.util.*;
 
+/**
+ * The type Cryptocurrency notifier.
+ */
 public class CryptocurrencyNotifier implements Observable {
 
     private final List<IObserver> observers;
@@ -25,6 +28,9 @@ public class CryptocurrencyNotifier implements Observable {
 
     private final Map<String, String> cryptoNameImage;
 
+    /**
+     * Instantiates a new Cryptocurrency notifier.
+     */
     public CryptocurrencyNotifier() {
         this.observers = new ArrayList<>();
         this.connectionAPI = new CryptocurrencyAPI();
@@ -33,12 +39,16 @@ public class CryptocurrencyNotifier implements Observable {
         this.cryptoNameImage = new HashMap<>();
 
         for (List<Object> row : cryptoParser.getData()) {
-            this.namesCryptocurrencies.add(((String)row.get(0)).toLowerCase());
-            this.cryptoNameImage.put((String)row.get(0), (String)row.get(1));
+            this.namesCryptocurrencies.add(((String) row.get(0)).toLowerCase());
+            this.cryptoNameImage.put((String) row.get(0), (String) row.get(1));
         }
         this.assets = new ArrayList<>();
     }
 
+    /**
+     * Subscribe.
+     * @param observer the observer
+     */
     @Override
     public void subscribe(IObserver observer) {
         if (!this.observers.contains(observer)) {
@@ -46,15 +56,27 @@ public class CryptocurrencyNotifier implements Observable {
         }
     }
 
+    /**
+     * Unsubscribe.
+     * @param observer the observer
+     */
     @Override
     public void unsubscribe(IObserver observer) {
         this.observers.remove(observer);
     }
 
+    /**
+     * Gets observers.
+     *
+     * @return the observers
+     */
     public List<IObserver> getObservers() {
         return observers;
     }
 
+    /**
+     * Notify observers.
+     */
     @Override
     public void notifyObservers() {
         for (IObserver observer : observers) {
@@ -75,18 +97,38 @@ public class CryptocurrencyNotifier implements Observable {
         }
     }
 
+    /**
+     * Gets assets.
+     *
+     * @return the assets
+     */
     public List<Asset> getAssets() {
         return assets;
     }
 
+    /**
+     * Gets names cryptocurrencies.
+     *
+     * @return the names cryptocurrencies
+     */
     public List<String> getNamesCryptocurrencies() {
         return namesCryptocurrencies;
     }
 
+    /**
+     * Gets connection api.
+     *
+     * @return the connection api
+     */
     public IConnectionAPI getConnectionAPI() {
         return connectionAPI;
     }
 
+    /**
+     * Gets crypto name image.
+     *
+     * @return the crypto name image
+     */
     public Map<String, String> getCryptoNameImage() {
         return cryptoNameImage;
     }
