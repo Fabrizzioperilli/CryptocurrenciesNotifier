@@ -21,6 +21,9 @@ import java.util.Objects;
 
 import static org.ull.dap.app.views.desktop.ViewDesktop.ROUTE_IMAGE_LOGO;
 
+/**
+ * The type Dashboard desktop.
+ */
 public class DashboardDesktop extends JFrame {
 
     private final XYSeries bitcoinSeries;
@@ -30,8 +33,13 @@ public class DashboardDesktop extends JFrame {
 
     private final DefaultCategoryDataset datasetBarChart;
 
+    /**
+     * Instantiates a new Dashboard desktop.
+     *
+     * @param title the title
+     */
     public DashboardDesktop(String title) {
-        super("Crypto Dashboard");
+        super("CryptoDashboard");
 
         // Crear series para las gráficas
         bitcoinSeries = new XYSeries("Bitcoin");
@@ -119,6 +127,11 @@ public class DashboardDesktop extends JFrame {
         plot.setRenderer(renderer);
     }
 
+    /**
+     * Update data.
+     *
+     * @param assets the assets
+     */
     public void updateData(List<Asset> assets) {
         long currentTime = System.currentTimeMillis();
         for (Asset asset : assets) {

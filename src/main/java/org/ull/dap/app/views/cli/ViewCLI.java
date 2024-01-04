@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The type View cli.
+ */
 public class ViewCLI implements IView {
 
     private final AppController controller;
@@ -20,6 +23,11 @@ public class ViewCLI implements IView {
     private final List<String> usersSelected;
     private String currentUser;
 
+    /**
+     * Instantiates a new View cli.
+     *
+     * @param model the model
+     */
     public ViewCLI(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
@@ -28,6 +36,9 @@ public class ViewCLI implements IView {
         menuUsers();
     }
 
+    /**
+     * Shoe menu users.
+     */
     private void menuUsers() {
         System.out.println("Available users: ");
         showUsersAvailable();
@@ -46,6 +57,12 @@ public class ViewCLI implements IView {
         selectUsers(scanner, numUsers);
     }
 
+    /**
+     * Select users.
+     *
+     * @param scanner  the scanner
+     * @param numUsers the num users
+     */
     private void selectUsers(Scanner scanner, int numUsers) {
         while (numUsers > usersSelected.size()) {
             System.out.println("Enter the number of the user you want to select: ");
@@ -57,6 +74,11 @@ public class ViewCLI implements IView {
         controller.actionPerformed(new ActionEvent(this, 0, "LOGIN"));
     }
 
+    /**
+     * Process user selection.
+     *
+     * @param index the index
+     */
     private void processUserSelection(int index) {
         if (index >= 0 && index < usersAvailable.size()) {
             String selectedUser = usersAvailable.get(index);
@@ -71,11 +93,17 @@ public class ViewCLI implements IView {
         }
     }
 
+    /**
+     * Show subscribers.
+     */
     public void showSubscribers() {
         System.out.print("Users logged: ");
         System.out.println(Arrays.toString(usersSelected.toArray()));
     }
 
+    /**
+     * Show users available.
+     */
     public void showUsersAvailable() {
         for (int i = 0; i < usersAvailable.size(); i++) {
             int count = i + 1;
@@ -83,12 +111,22 @@ public class ViewCLI implements IView {
         }
     }
 
+    /**
+     * Gets users selected.
+     *
+     * @return the users selected
+     */
     @Override
     public List<String> getUsersSelected() {
         return usersSelected;
     }
 
 
+    /**
+     * Gets notifications.
+     *
+     * @return the notifications
+     */
     @Override
     public List<INotification> getNotifications() {
         if (usersSelected != null) {
@@ -97,15 +135,22 @@ public class ViewCLI implements IView {
         return notifications;
     }
 
+    /**
+     * Window select cryptos.
+     */
     @Override
     public void windowSelectCryptos() {
         showSubscribers();
         usersSelected.forEach(this::processCryptoSelection);
         controller.actionPerformed(new ActionEvent(this, 0, "START"));
-        controller.getNotifier().getObservers().forEach(observer ->
-                System.out.print(observer.getName() + " selected cryptos: " + observer.getNameCryptos() + "\n"));
+        controller.getNotifier().getObservers().forEach(observer -> System.out.print(observer.getName() + " selected cryptos: " + observer.getNameCryptos() + "\n"));
     }
 
+    /**
+     * Process crypto selection.
+     *
+     * @param userSelected the user selected
+     */
     private void processCryptoSelection(String userSelected) {
         currentUser = userSelected;
         System.out.println("[ " + currentUser + " ]");
@@ -125,6 +170,12 @@ public class ViewCLI implements IView {
         selectCryptos(scanner, numCryptos);
     }
 
+    /**
+     * Select cryptos.
+     *
+     * @param scanner    the scanner
+     * @param numCryptos the num cryptos
+     */
     private void selectCryptos(Scanner scanner, int numCryptos) {
         while (numCryptos > controller.getNotifier().getObservers().get(usersSelected.indexOf(currentUser)).getNameCryptos().size()) {
             System.out.println("Enter the number of the crypto you want to select: ");
@@ -135,6 +186,11 @@ public class ViewCLI implements IView {
         }
     }
 
+    /**
+     * Process crypto selection.
+     *
+     * @param index the index
+     */
     private void processCryptoSelection(int index) {
         if (index >= 0 && index < controller.getNotifier().getNamesCryptocurrencies().size()) {
             String cryptoName = controller.getNotifier().getNamesCryptocurrencies().get(index);
@@ -149,13 +205,21 @@ public class ViewCLI implements IView {
         }
     }
 
-    private void showListCryptos() {
+    /**
+     * Show list cryptos.
+     */
+    public void showListCryptos() {
         System.out.println("Available cryptos: ");
         for (int i = 0; i < controller.getNotifier().getNamesCryptocurrencies().size(); i++) {
             System.out.println("[" + (i + 1) + "] " + controller.getNotifier().getNamesCryptocurrencies().get(i));
         }
     }
 
+    /**
+     * Gets user current.
+     *
+     * @return the user current
+     */
     @Override
     public String getUserComboBoxString() {
         return currentUser;

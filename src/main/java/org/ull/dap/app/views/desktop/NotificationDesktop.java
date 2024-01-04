@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The type Notification desktop.
+ */
 public class NotificationDesktop extends JFrame implements INotification {
 
     private boolean changeColor;
@@ -24,8 +27,14 @@ public class NotificationDesktop extends JFrame implements INotification {
     private JPanel cryptoPanel;
     private JLabel lblTitle, lblFooter;
     private JScrollPane scrollPaneCrypto;
+    /**
+     * The constant ROUTE_IMAGE_LOGO.
+     */
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
 
+    /**
+     * Instantiates a new Notification desktop.
+     */
     public NotificationDesktop() {
         initializeUI();
         JPanel contentPanel = new JPanel();
@@ -37,7 +46,7 @@ public class NotificationDesktop extends JFrame implements INotification {
     }
 
     private void initializeUI() {
-        setTitle("Notify");
+        setTitle("Notification");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 570, 250);
         setLocationRelativeTo(null);
@@ -78,6 +87,14 @@ public class NotificationDesktop extends JFrame implements INotification {
         return lblTitle;
     }
 
+    /**
+     * Resize icon image icon.
+     *
+     * @param icon   the icon
+     * @param width  the width
+     * @param height the height
+     * @return the image icon
+     */
     public ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image image = icon.getImage();
         Image newImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -153,6 +170,12 @@ public class NotificationDesktop extends JFrame implements INotification {
         cryptoPanel.repaint();
     }
 
+    /**
+     * Extract name crypto string.
+     *
+     * @param message the message
+     * @return the string
+     */
     public static String extractNameCrypto(String message) {
         String pattern = "\\[([^\\]]+)\\]";
         Pattern p = Pattern.compile(pattern);

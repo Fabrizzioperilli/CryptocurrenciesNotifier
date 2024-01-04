@@ -5,13 +5,26 @@ import org.ull.dap.app.views.INotification;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Notification cli.
+ */
 public class NotificationCLI implements INotification {
 
+    /**
+     * Instantiates a new Notification cli.
+     */
     public NotificationCLI() {
 
     }
+
+    /**
+     * Show notification.
+     *
+     * @param messages     the messages
+     * @param cryptoImages the crypto images
+     */
     @Override
-    public void showNotification(List<String> messages, Map<String,String> cryptoImages) {
+    public void showNotification(List<String> messages, Map<String, String> cryptoImages) {
         System.out.println("--------------------------------------------------------------------");
         System.out.println("Notification: ");
         for (String message : messages) {

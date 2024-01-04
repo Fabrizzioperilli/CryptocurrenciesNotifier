@@ -16,28 +16,37 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The type View desktop.
+ */
 public class ViewDesktop extends JFrame implements IView {
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
     private JLabel lblTitle, lblLogo, lblUser;
-    private JButton btnStart,btnLogin;
+    private JButton btnStart, btnLogin;
     private JComboBox<String> comboBoxUsersSelected;
     private JList<String> usersList;
     private JPanel contentPane, panel, pnSelCrypto;
     private final AppController controller;
     private List<String> usersSelected;
-    private List<String> usersAvailable;
-    private List <INotification> notifications;
-    private Map<String, JButton> addButtonMap = new HashMap<>();
-    private Map<String, JButton> deleteButtonMap = new HashMap<>();
-
+    private final List<String> usersAvailable;
+    private final List<INotification> notifications;
+    private final Map<String, JButton> addButtonMap;
+    private final Map<String, JButton> deleteButtonMap;
 
 
     private DashboardDesktop dashboardDesktop;
 
+    /**
+     * Instantiates a new View desktop.
+     *
+     * @param model the model
+     */
     public ViewDesktop(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
         this.usersAvailable = controller.getUsersAvailable();
+        this.addButtonMap = new HashMap<>();
+        this.deleteButtonMap = new HashMap<>();
         this.dashboardDesktop = new DashboardDesktop("Dashboard CryptoNotifier");
         initializeUI();
     }
@@ -85,6 +94,11 @@ public class ViewDesktop extends JFrame implements IView {
         return new ImageIcon(newImage);
     }
 
+    /**
+     * Gets btn login.
+     *
+     * @return the btn login
+     */
     public JButton getBtnLogin() {
         if (btnLogin != null) {
             return btnLogin;
@@ -98,6 +112,11 @@ public class ViewDesktop extends JFrame implements IView {
         return btnLogin;
     }
 
+    /**
+     * Gets list users.
+     *
+     * @return the list users
+     */
     public JList<String> getListUsers() {
         if (usersList != null) {
             return usersList;
@@ -108,6 +127,11 @@ public class ViewDesktop extends JFrame implements IView {
         return usersList;
     }
 
+    /**
+     * Gets panel login.
+     *
+     * @return the panel login
+     */
     public JPanel getPanelLogin() {
         if (panel != null) {
             return panel;
@@ -151,6 +175,11 @@ public class ViewDesktop extends JFrame implements IView {
         return pnSelCrypto;
     }
 
+    /**
+     * Display cryptos j scroll pane.
+     *
+     * @return the j scroll pane
+     */
     private JScrollPane displayCryptos() {
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
@@ -169,6 +198,13 @@ public class ViewDesktop extends JFrame implements IView {
         return scrollPane;
     }
 
+    /**
+     * Create item crypto j panel for display.
+     *
+     * @param nameCrypto the name crypto
+     * @param linkImage  the link image
+     * @return the j panel
+     */
     private JPanel createItemCrypto(String nameCrypto, String linkImage) {
         JButton btnAdd = new JButton("+");
         btnAdd.setBackground(new Color(0, 255, 0));
@@ -213,7 +249,7 @@ public class ViewDesktop extends JFrame implements IView {
         JLabel imageLabel = new JLabel();
         try {
             BufferedImage image = ImageIO.read(new URL(imageUrl));
-            Image scaledImage = image.getScaledInstance(30,30, Image.SCALE_SMOOTH);
+            Image scaledImage = image.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
             ImageIcon icon = new ImageIcon(scaledImage);
             imageLabel.setIcon(icon);
         } catch (IOException e) {
@@ -232,6 +268,11 @@ public class ViewDesktop extends JFrame implements IView {
         return lblUser;
     }
 
+    /**
+     * Gets combo box users selected.
+     *
+     * @return the combo box users selected
+     */
     public JComboBox<String> getComboBoxUsersSelected() {
         if (comboBoxUsersSelected != null) {
             return comboBoxUsersSelected;
@@ -243,7 +284,7 @@ public class ViewDesktop extends JFrame implements IView {
     }
 
     public String getUserComboBoxString() {
-        return (String)comboBoxUsersSelected.getSelectedItem();
+        return (String) comboBoxUsersSelected.getSelectedItem();
     }
 
     @Override
@@ -262,14 +303,29 @@ public class ViewDesktop extends JFrame implements IView {
         return notifications;
     }
 
+    /**
+     * Sets users selected.
+     *
+     * @param usersSelected the users selected
+     */
     public void setUsersSelected(List<String> usersSelected) {
         this.usersSelected = usersSelected;
     }
 
+    /**
+     * Sets dashboard desktop.
+     *
+     * @param dashboardDesktop the dashboard desktop
+     */
     public void setDashboardDesktop(DashboardDesktop dashboardDesktop) {
         this.dashboardDesktop = dashboardDesktop;
     }
 
+    /**
+     * Gets dashboard desktop.
+     *
+     * @return the dashboard desktop
+     */
     public DashboardDesktop getDashboardDesktop() {
         return dashboardDesktop;
     }
@@ -288,6 +344,12 @@ public class ViewDesktop extends JFrame implements IView {
         return btnStart;
     }
 
+    /**
+     * Enable buttons.
+     *
+     * @param nombre the nombre
+     * @param tipo   the tipo
+     */
     public void enableButtons(String nombre, boolean tipo) {
         JButton addButton = addButtonMap.get(nombre);
         JButton deleteButton = deleteButtonMap.get(nombre);
@@ -323,5 +385,4 @@ public class ViewDesktop extends JFrame implements IView {
             }
         }
     }
-
 }
