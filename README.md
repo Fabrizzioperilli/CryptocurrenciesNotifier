@@ -1,22 +1,46 @@
-# CryptoNotifier
+# Cryptocurrencies Notifier
 
+## Tabla de contenidos
 
-## Descripción
+- [1. Introducción](#Introducción)
+- [2. Descripción](#Descripción)
+- [3. Instalación](#Instalación)
+- [4. Ejecución](#Ejecución)
+- [5. Autor](#Autor)
 
-El proyecto consiste en una aplicación de escritorio desarrollada en Java que permite al usuario recibir notificaciones de los precios de las criptomonedas que elija. Para ello, el usuario debe introducir el nombre de la criptomoneda y el precio al que quiere que se le notifique. Cuando el precio de la criptomoneda modifique su precio, se le notificará al usuario cada 40 segundos mediante una ventana emergente.
+---
+
+## 1. Introducción
+
+El proyecto consiste en una aplicación desarrollada en Java 
+que permite al usuario recibir información en tiempo real sobre criptomonedas. 
+La aplicación obtiene los datos de las criptomonedas a través de una API 
+y se encarga de notificar a los usuarios suscritos acerca de los precios y otros datos 
+relevantes que se actualizan periódicamente.
+
+---
+
+## 2. Descripción 
+
+El proyecto utiliza el patrón de diseño Observador y la arquitectura de software Modelo-Vista-Controlador
+permitiendo una mejorar la escalabilidad y adaptación del código a nuevos cambios.
+
+La aplicación tiene dos visualizaciones diferentes. Una de ellas es por CLI (Command Line Interfaces)
+y la otra es por GUI (Graphical User Interface) que permite una visualización interactiva y
+un cuadro de mando que permite la simulación de gráficos para representar los datos obtenidos. En el directorio raíz del proyecto se encuentran las dos versiones generadas en ficheros .JAR
 
 ----
 
-## Instalación
+## 3. Instalación
 
 Para instalar el proyecto, se debe clonar el repositorio y ejecutar el siguiente comando:
 
 ```bash
-git clone git@github.com:Fabrizzioperilli/CryptoNotifier.git
+git clone git@github.com:Fabrizzioperilli/CryptocurrenciesNotifier.git
 ```
 ---
 
-## Ejecución
+## 4. Ejecución
 
 Para ejecutar el proyecto, se debe ejecutar el siguiente comando:
 
@@ -29,10 +53,12 @@ Este comando se debe ejecutar desde la carpeta raíz del proyecto y debe tener i
 ---
 
 
-## Autores
-
-- Javier Novella Tomás alu0101681832@ull.edu.es
-
-- Joan Marc Perea Llodrá alu0101686448@ull.edu.es
+## 5. Autor
 
 - Fabrizzio Daniell Perilli Martín alu0101138589@ull.edu.es
+
+---
+
+> [!IMPORTANT]
+> Asegúrate de estar conectado a internet ya que los datos se obtienen en tiempo real a través
+> de la API de [Coincap](https://coincap.io).
