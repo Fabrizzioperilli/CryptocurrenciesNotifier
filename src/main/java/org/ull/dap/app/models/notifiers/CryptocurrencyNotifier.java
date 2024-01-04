@@ -21,16 +21,14 @@ public class CryptocurrencyNotifier implements Observable {
 
     private final List<Asset> assets;
 
-    private final Parser cryptoParser;
-
     private static final String CSV_CRYPTOS_PATH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTlyyYAafZXld0_zAcs2GoH1PKTJGnQoLX9hIitkZUXObyRQ_MWbHKyOOa_7u4SKm0bVkYt190jtn9S/pub?output=csv";
 
-    private Map<String, String> cryptoNameImage;
+    private final Map<String, String> cryptoNameImage;
 
     public CryptocurrencyNotifier() {
         this.observers = new ArrayList<>();
         this.connectionAPI = new CryptocurrencyAPI();
-        this.cryptoParser = new CryptoParser(new CSVReader(CSV_CRYPTOS_PATH));
+        Parser cryptoParser = new CryptoParser(new CSVReader(CSV_CRYPTOS_PATH));
         this.namesCryptocurrencies = new ArrayList<>();
         this.cryptoNameImage = new HashMap<>();
 

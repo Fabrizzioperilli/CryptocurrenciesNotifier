@@ -21,7 +21,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>org.ull.dap.app.Main</mainClass>
+                    <mainClass>org.ull.dap.app.AppCLI</mainClass>
                 </configuration>
             </plugin>
         </plugins>

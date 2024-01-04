@@ -8,10 +8,18 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * The type Cryptocurrency api.
+ */
 public class CryptocurrencyAPI implements IConnectionAPI {
 
     private final String URI_API = "https://api.coincap.io/v2/assets/";
 
+    /**
+     * Build http request http request.
+     * @param nameCrypto the name crypto
+     * @return The http request
+     */
     @Override
     public HttpRequest buildHttpRequest(String nameCrypto) {
         URI uri = URI.create(URI_API + nameCrypto);
@@ -22,12 +30,21 @@ public class CryptocurrencyAPI implements IConnectionAPI {
                 .build();
     }
 
+    /**
+     * Send http request http response.
+     * @param request the request
+     * @return The http response
+     */
     @Override
     public HttpResponse<String> sendHttpRequest(HttpRequest request) throws Exception {
         return HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    //Obtiene los datos en JSON y convierte a un objeto Asset
+    /**
+     * Gets asset data.
+     * @param nameCrypto the name crypto
+     * @return the asset data
+     */
     public Asset getAssetData(String nameCrypto) {
         try {
             HttpRequest request = buildHttpRequest(nameCrypto);
@@ -40,6 +57,11 @@ public class CryptocurrencyAPI implements IConnectionAPI {
         }
     }
 
+    /**
+     * Gets uri api.
+     *
+     * @return the uri api
+     */
     public String getUriAPI() {
         return URI_API;
     }

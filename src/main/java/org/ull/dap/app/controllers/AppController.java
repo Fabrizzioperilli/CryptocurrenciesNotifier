@@ -1,8 +1,5 @@
 package org.ull.dap.app.controllers;
 
-import org.ull.dap.app.models.connections.csv.CSVReader;
-import org.ull.dap.app.models.connections.csv.Parser;
-import org.ull.dap.app.models.connections.csv.UsersParser;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
 import org.ull.dap.app.models.users.User;
@@ -27,21 +24,13 @@ public class AppController implements ActionListener {
 
     private final Map<IObserver, INotification> notificationsWithUsers;
 
-    private Parser usersParser;
-
-    private List<String> usersAvailable;
-
-    private final static String CSV_USERS_PATH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ4XyLOqWV2vg4r_LHPuq1Alm38Rb_WZG0-uvuH8vj-njMY2KqURrvgOKS-FtPIOe-sd2wOKfbJnDi/pub?output=csv";
+    private final List<String> usersAvailable;
 
     public AppController(CryptocurrencyNotifier notifier, IView view) {
         this.notifier = notifier;
         this.view = view;
         this.notificationsWithUsers = new HashMap<>();
-        usersParser = new UsersParser(new CSVReader(CSV_USERS_PATH));
-        usersAvailable = new ArrayList<>();
-        for (List<Object> row : usersParser.getData()) {
-            usersAvailable.add((String) row.get(0));
-        }
+        usersAvailable = Arrays.asList("USER_1", "USER_2", "USER_3", "USER_4", "USER_5");
     }
 
     public CryptocurrencyNotifier getNotifier() {
@@ -173,7 +162,10 @@ public class AppController implements ActionListener {
                 } else {
                     observer.addCrypto(name);
                 }
-                view.enableButtons(name, isDelete);
+
+                if (view instanceof ViewDesktop) {
+                    ((ViewDesktop) view).enableButtons(name, isDelete);
+                }
             }
         }
     }

@@ -288,7 +288,6 @@ public class ViewDesktop extends JFrame implements IView {
         return btnStart;
     }
 
-    @Override
     public void enableButtons(String nombre, boolean tipo) {
         JButton addButton = addButtonMap.get(nombre);
         JButton deleteButton = deleteButtonMap.get(nombre);

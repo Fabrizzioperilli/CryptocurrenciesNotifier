@@ -15,13 +15,9 @@ import java.util.Scanner;
 public class ViewCLI implements IView {
 
     private final AppController controller;
-
-    private List<INotification> notifications;
-
-    private List<String> usersAvailable;
-
-    private List<String> usersSelected;
-
+    private final List<INotification> notifications;
+    private final List<String> usersAvailable;
+    private final List<String> usersSelected;
     private String currentUser;
 
     public ViewCLI(CryptocurrencyNotifier model) {
@@ -32,7 +28,7 @@ public class ViewCLI implements IView {
         menuUsers();
     }
 
-    void menuUsers() {
+    private void menuUsers() {
         System.out.println("Available users: ");
         showUsersAvailable();
         Scanner scanner = new Scanner(System.in);
@@ -47,23 +43,32 @@ public class ViewCLI implements IView {
             }
         } while (numUsers > usersAvailable.size());
 
+        selectUsers(scanner, numUsers);
+    }
+
+    private void selectUsers(Scanner scanner, int numUsers) {
         while (numUsers > usersSelected.size()) {
             System.out.println("Enter the number of the user you want to select: ");
             showUsersAvailable();
             System.out.print("Number: ");
             int index = scanner.nextInt() - 1;
-            if (index >= 0 && index < usersAvailable.size()) {
-                if (!usersSelected.contains(usersAvailable.get(index))) {
-                    System.out.println(usersAvailable.get(index) + " selected successfully !!");
-                    usersSelected.add(usersAvailable.get(index));
-                } else {
-                    System.out.println("The user has already been selected");
-                }
-            } else {
-                System.out.println("The user does not exist");
-            }
+            processUserSelection(index);
         }
         controller.actionPerformed(new ActionEvent(this, 0, "LOGIN"));
+    }
+
+    private void processUserSelection(int index) {
+        if (index >= 0 && index < usersAvailable.size()) {
+            String selectedUser = usersAvailable.get(index);
+            if (!usersSelected.contains(selectedUser)) {
+                System.out.println(selectedUser + " selected successfully !!");
+                usersSelected.add(selectedUser);
+            } else {
+                System.out.println("The user has already been selected");
+            }
+        } else {
+            System.out.println("The user does not exist");
+        }
     }
 
     public void showSubscribers() {
@@ -72,9 +77,8 @@ public class ViewCLI implements IView {
     }
 
     public void showUsersAvailable() {
-        int count;
         for (int i = 0; i < usersAvailable.size(); i++) {
-            count = i + 1;
+            int count = i + 1;
             System.out.println("[" + count + "] " + usersAvailable.get(i));
         }
     }
@@ -86,16 +90,9 @@ public class ViewCLI implements IView {
 
 
     @Override
-    public void enableButtons(String name, boolean enable) {
-
-    }
-
-    @Override
     public List<INotification> getNotifications() {
         if (usersSelected != null) {
-            for (String userSelected : usersSelected) {
-                notifications.add(new NotificationCLI());
-            }
+            usersSelected.forEach(userSelected -> notifications.add(new NotificationCLI()));
         }
         return notifications;
     }
@@ -103,44 +100,56 @@ public class ViewCLI implements IView {
     @Override
     public void windowSelectCryptos() {
         showSubscribers();
-        for (String userSelected : usersSelected) {
-            this.currentUser = userSelected;
-            System.out.println("[ " + currentUser + " ]");
-            showListCryptos();
-            Scanner scanner = new Scanner(System.in);
-            int numCryptos;
-
-            do {
-                System.out.print("Enter the number of cryptos you want to select: ");
-                numCryptos = scanner.nextInt();
-
-                if (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size()) {
-                    System.out.println("The number of cryptos selected is greater than the number of cryptos available");
-                }
-            } while (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size());
-
-            while (numCryptos > controller.getNotifier().getObservers().get(usersSelected.indexOf(userSelected)).getNameCryptos().size()) {
-                System.out.println("Enter the number of the crypto you want to select: ");
-                showListCryptos();
-                System.out.print("Number: ");
-                int index = scanner.nextInt() - 1;
-                if (index >= 0 && index < controller.getNotifier().getNamesCryptocurrencies().size()) {
-                    if (!controller.getNotifier().getObservers().get(usersSelected.indexOf(userSelected)).getNameCryptos().contains(controller.getNotifier().getNamesCryptocurrencies().get(index))) {
-                        System.out.println("Add " + controller.getNotifier().getNamesCryptocurrencies().get(index) + " successfully !!");
-                        controller.actionPerformed(new ActionEvent(this, 0, "ADD_" + controller.getNotifier().getNamesCryptocurrencies().get(index)));
-                    } else {
-                        System.out.println("The crypto has already been selected");
-                    }
-                } else {
-                    System.out.println("The crypto does not exist");
-                }
-            }
-        }
+        usersSelected.forEach(this::processCryptoSelection);
         controller.actionPerformed(new ActionEvent(this, 0, "START"));
-        controller.getNotifier().getObservers().forEach(observer -> System.out.print(observer.getName() + " selected cryptos: " + observer.getNameCryptos() + "\n"));
+        controller.getNotifier().getObservers().forEach(observer ->
+                System.out.print(observer.getName() + " selected cryptos: " + observer.getNameCryptos() + "\n"));
     }
 
-    void showListCryptos() {
+    private void processCryptoSelection(String userSelected) {
+        currentUser = userSelected;
+        System.out.println("[ " + currentUser + " ]");
+        showListCryptos();
+        Scanner scanner = new Scanner(System.in);
+        int numCryptos;
+
+        do {
+            System.out.print("Enter the number of cryptos you want to select: ");
+            numCryptos = scanner.nextInt();
+
+            if (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size()) {
+                System.out.println("The number of cryptos selected is greater than the number of cryptos available");
+            }
+        } while (numCryptos > controller.getNotifier().getNamesCryptocurrencies().size());
+
+        selectCryptos(scanner, numCryptos);
+    }
+
+    private void selectCryptos(Scanner scanner, int numCryptos) {
+        while (numCryptos > controller.getNotifier().getObservers().get(usersSelected.indexOf(currentUser)).getNameCryptos().size()) {
+            System.out.println("Enter the number of the crypto you want to select: ");
+            showListCryptos();
+            System.out.print("Number: ");
+            int index = scanner.nextInt() - 1;
+            processCryptoSelection(index);
+        }
+    }
+
+    private void processCryptoSelection(int index) {
+        if (index >= 0 && index < controller.getNotifier().getNamesCryptocurrencies().size()) {
+            String cryptoName = controller.getNotifier().getNamesCryptocurrencies().get(index);
+            if (!controller.getNotifier().getObservers().get(usersSelected.indexOf(currentUser)).getNameCryptos().contains(cryptoName)) {
+                System.out.println("Add " + cryptoName + " successfully !!");
+                controller.actionPerformed(new ActionEvent(this, 0, "ADD_" + cryptoName));
+            } else {
+                System.out.println("The crypto has already been selected");
+            }
+        } else {
+            System.out.println("The crypto does not exist");
+        }
+    }
+
+    private void showListCryptos() {
         System.out.println("Available cryptos: ");
         for (int i = 0; i < controller.getNotifier().getNamesCryptocurrencies().size(); i++) {
             System.out.println("[" + (i + 1) + "] " + controller.getNotifier().getNamesCryptocurrencies().get(i));

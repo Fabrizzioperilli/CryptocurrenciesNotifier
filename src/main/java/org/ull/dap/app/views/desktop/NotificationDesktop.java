@@ -1,8 +1,5 @@
 package org.ull.dap.app.views.desktop;
 
-import org.ull.dap.app.Main;
-import org.ull.dap.app.controllers.AppController;
-import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.views.INotification;
 
 import javax.imageio.ImageIO;
