@@ -3,6 +3,9 @@ package org.ull.dap.app.models.connections.csv;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Parser.
+ */
 public abstract class Parser {
     private CSVReader csvReader;
 
@@ -10,6 +13,11 @@ public abstract class Parser {
 
     private String[] header;
 
+    /**
+     * Instantiates a new Parser.
+     *
+     * @param csvReader the csv reader
+     */
     public Parser(CSVReader csvReader) {
         this.csvReader = csvReader;
         data = new ArrayList<>();
@@ -29,12 +37,29 @@ public abstract class Parser {
         }
     }
 
+    /**
+     * Convert object.
+     *
+     * @param value     the value
+     * @param columName the colum name
+     * @return the object
+     */
     protected abstract Object convert(String value, String columName);
 
+    /**
+     * Gets data.
+     *
+     * @return the data
+     */
     public List<List<Object>> getData() {
         return data;
     }
 
+    /**
+     * Get header string [ ].
+     *
+     * @return the string [ ]
+     */
     public String[] getHeader() {
         return header;
     }

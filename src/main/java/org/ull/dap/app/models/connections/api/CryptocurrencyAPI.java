@@ -17,21 +17,19 @@ public class CryptocurrencyAPI implements IConnectionAPI {
 
     /**
      * Build http request http request.
+     *
      * @param nameCrypto the name crypto
      * @return The http request
      */
     @Override
     public HttpRequest buildHttpRequest(String nameCrypto) {
         URI uri = URI.create(URI_API + nameCrypto);
-        return HttpRequest.newBuilder()
-                .uri(uri)
-                .header("Accept", "application/json")
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
+        return HttpRequest.newBuilder().uri(uri).header("Accept", "application/json").method("GET", HttpRequest.BodyPublishers.noBody()).build();
     }
 
     /**
      * Send http request http response.
+     *
      * @param request the request
      * @return The http response
      */
@@ -42,6 +40,7 @@ public class CryptocurrencyAPI implements IConnectionAPI {
 
     /**
      * Gets asset data.
+     *
      * @param nameCrypto the name crypto
      * @return the asset data
      */

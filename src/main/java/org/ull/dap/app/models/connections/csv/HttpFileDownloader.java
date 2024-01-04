@@ -5,12 +5,21 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * The type Http file downloader.
+ */
 public class HttpFileDownloader {
     static private int BUFFER_SIZE = 1024;
 
     private HttpFileDownloader() {
     }
 
+    /**
+     * Download from url string.
+     *
+     * @param link the link
+     * @return the string
+     */
     public static String downloadFromURL(String link) {
         StringBuilder myURLContent = new StringBuilder();
         try {
