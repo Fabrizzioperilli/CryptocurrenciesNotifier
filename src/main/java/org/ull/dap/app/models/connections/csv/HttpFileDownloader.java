@@ -9,7 +9,7 @@ import java.net.URL;
  * The type Http file downloader.
  */
 public class HttpFileDownloader {
-    static private int BUFFER_SIZE = 1024;
+    static private final int BUFFER_SIZE = 1024;
 
     private HttpFileDownloader() {
     }
@@ -24,7 +24,7 @@ public class HttpFileDownloader {
         StringBuilder myURLContent = new StringBuilder();
         try {
             BufferedInputStream in = new BufferedInputStream(new URL(link).openStream());
-            int bytesRead = 0;
+            int bytesRead;
             byte[] byteContents = new byte[BUFFER_SIZE];
             while ((bytesRead = in.read(byteContents)) != -1) {
                 myURLContent.append(new String(byteContents, 0, bytesRead));
@@ -32,11 +32,11 @@ public class HttpFileDownloader {
             return myURLContent.toString();
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            System.err.println("There is a malformed URL in " + HttpFileDownloader.class.getClass());
+            System.err.println("There is a malformed URL in " + HttpFileDownloader.class);
             System.exit(1);
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("There is an IO error for the Stream opened in " + HttpFileDownloader.class.getClass());
+            System.err.println("There is an IO error for the Stream opened in " + HttpFileDownloader.class);
             System.exit(1);
         }
 

@@ -7,11 +7,10 @@ import java.util.List;
  * The type Parser.
  */
 public abstract class Parser {
-    private CSVReader csvReader;
 
-    private List<List<Object>> data;
+    private final List<List<Object>> data;
 
-    private String[] header;
+    private final String[] header;
 
     /**
      * Instantiates a new Parser.
@@ -19,7 +18,6 @@ public abstract class Parser {
      * @param csvReader the csv reader
      */
     public Parser(CSVReader csvReader) {
-        this.csvReader = csvReader;
         data = new ArrayList<>();
 
         this.header = csvReader.getHeader().split(",");
