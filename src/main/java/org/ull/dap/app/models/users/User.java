@@ -4,6 +4,9 @@ import org.ull.dap.app.models.entities.Asset;
 
 import java.util.*;
 
+/**
+ * The type User.
+ */
 public class User implements IObserver {
 
     private String name;
@@ -12,8 +15,19 @@ public class User implements IObserver {
     private Map<String, Double> cryptoPrices;
     private List<String> messagesToNotify;
 
-    public User() {}
+    /**
+     * Instantiates a new User.
+     */
+    public User() {
+    }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param name        the name
+     * @param id          the id
+     * @param nameCryptos the name cryptos
+     */
     public User(String name, long id, List<String> nameCryptos) {
         this.name = name;
         this.id = id;
@@ -32,7 +46,7 @@ public class User implements IObserver {
         double newPrice = asset.getData().getPriceUsd();
         double percentageChange = Math.round(asset.getData().getChangePercent24Hr() * 1000.0) / 1000.0;
         cryptoPrices.put(nameCrypto, newPrice);
-        String messageNotify  = "  " + name + " [" + nameCrypto + "]. New price:   " + newPrice + " USD\n" +
+        String messageNotify = "  " + name + " [" + nameCrypto + "]. New price:   " + newPrice + " USD\n" +
                 "  Change percentage 24h:   " + percentageChange + "%\n";
         messagesToNotify.add(messageNotify);
     }
@@ -43,6 +57,11 @@ public class User implements IObserver {
     }
 
 
+    /**
+     * Gets crypto prices.
+     *
+     * @return the crypto prices
+     */
     public Map<String, Double> getCryptoPrices() {
         return cryptoPrices;
     }
@@ -73,5 +92,59 @@ public class User implements IObserver {
 
     public List<String> getMessagesToNotify() {
         return messagesToNotify;
+    }
+
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * Sets name cryptos.
+     *
+     * @param nameCryptos the name cryptos
+     */
+    public void setNameCryptos(List<String> nameCryptos) {
+        this.nameCryptos = nameCryptos;
+    }
+
+    /**
+     * Sets crypto prices.
+     *
+     * @param cryptoPrices the crypto prices
+     */
+    public void setCryptoPrices(Map<String, Double> cryptoPrices) {
+        this.cryptoPrices = cryptoPrices;
+    }
+
+    /**
+     * Sets messages to notify.
+     *
+     * @param messagesToNotify the messages to notify
+     */
+    public void setMessagesToNotify(List<String> messagesToNotify) {
+        this.messagesToNotify = messagesToNotify;
     }
 }
