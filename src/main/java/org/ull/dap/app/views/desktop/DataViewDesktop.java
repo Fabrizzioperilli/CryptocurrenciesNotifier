@@ -3,8 +3,9 @@ package org.ull.dap.app.views.desktop;
 import org.ull.dap.app.controllers.AppController;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
-import org.ull.dap.app.views.INotification;
-import org.ull.dap.app.views.IView;
+import org.ull.dap.app.views.IDashboardView;
+import org.ull.dap.app.views.INotificationView;
+import org.ull.dap.app.views.IDataView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * The type View desktop.
  */
-public class ViewDesktop extends JFrame implements IView {
+public class DataViewDesktop extends JFrame implements IDataView {
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
     private JLabel lblTitle, lblLogo, lblUser;
     private JButton btnStart, btnLogin;
@@ -29,19 +30,17 @@ public class ViewDesktop extends JFrame implements IView {
     private final AppController controller;
     private List<String> usersSelected;
     private final List<String> usersAvailable;
-    private final List<INotification> notifications;
     private final Map<String, JButton> addButtonMap;
     private final Map<String, JButton> deleteButtonMap;
-
-
-    private DashboardDesktop dashboardDesktop;
+    private final List<INotificationView> notifications;
+    private IDashboardView dashboardDesktop;
 
     /**
      * Instantiates a new View desktop.
      *
      * @param model the model
      */
-    public ViewDesktop(CryptocurrencyNotifier model) {
+    public DataViewDesktop(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
         this.usersAvailable = controller.getUsersAvailable();
@@ -294,10 +293,10 @@ public class ViewDesktop extends JFrame implements IView {
     }
 
     @Override
-    public List<INotification> getNotifications() {
+    public List<INotificationView> getNotifications() {
         if (usersSelected != null) {
             for (int i = 0; i < usersSelected.size(); i++) {
-                this.notifications.add(new NotificationDesktop());
+                this.notifications.add(new NotificationDesktopView());
             }
         }
         return notifications;
@@ -326,7 +325,7 @@ public class ViewDesktop extends JFrame implements IView {
      *
      * @return the dashboard desktop
      */
-    public DashboardDesktop getDashboardDesktop() {
+    public IDashboardView getDashboardDesktop() {
         return dashboardDesktop;
     }
 

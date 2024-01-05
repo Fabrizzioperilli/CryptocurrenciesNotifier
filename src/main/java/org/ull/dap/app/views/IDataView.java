@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The interface View.
  */
-public interface IView {
+public interface IDataView {
 
     /**
      * Gets users selected.
@@ -19,7 +19,7 @@ public interface IView {
      *
      * @return the notifications
      */
-    List<INotification> getNotifications();
+    List<INotificationView> getNotifications();
 
     /**
      * Window select cryptos.

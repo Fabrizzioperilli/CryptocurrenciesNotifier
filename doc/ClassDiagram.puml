@@ -1,0 +1,295 @@
+@startuml
+class org.ull.dap.app.controllers.StartManager {
+- AppController appController
+- {static} int TIME_TO_UPDATE
++ void handleStart()
+- void showError()
++ boolean checkAllUsersHaveCryptos()
++ void start()
+}
+class org.ull.dap.app.AppDesktop {
++ {static} void main(String[])
+}
+class org.ull.dap.app.AppCLI {
++ {static} void main(String[])
+}
+class org.ull.dap.app.views.cli.NotificationCLI {
++ void showNotification(List<String>,Map<String,String>)
+}
+class org.ull.dap.app.views.desktop.ViewDesktop {
++ {static} String ROUTE_IMAGE_LOGO
+- JLabel lblTitle
+- JButton btnStart
+- JComboBox<String> comboBoxUsersSelected
+- JList<String> usersList
+- JPanel contentPane
+- AppController controller
+- List<String> usersSelected
+- List<String> usersAvailable
+- List<INotification> notifications
+- Map<String,JButton> addButtonMap
+- Map<String,JButton> deleteButtonMap
+- DashboardDesktop dashboardDesktop
+- void initializeUI()
+- JLabel getLblLogo()
+- JLabel getLblTitle()
+- ImageIcon resizeImage(ImageIcon,int,int)
++ JButton getBtnLogin()
++ JList<String> getListUsers()
++ JPanel getPanelLogin()
++ void windowSelectCryptos()
+- void fillComboBoxUsers()
+- JPanel getPanelSelectCrypto()
+- JScrollPane displayCryptos()
+- JPanel createItemCrypto(String,String)
+- JLabel createImageCrypto(String)
+- JLabel getLblUser()
++ JComboBox<String> getComboBoxUsersSelected()
++ String getUserComboBoxString()
++ List<String> getUsersSelected()
++ List<INotification> getNotifications()
++ void setUsersSelected(List<String>)
++ void setDashboardDesktop(DashboardDesktop)
++ DashboardDesktop getDashboardDesktop()
+- JButton getBtnStart()
++ void enableButtons(String,boolean)
+- void eventButtons()
+- void activateButtons(String)
+}
+class org.ull.dap.app.views.cli.ViewCLI {
+- AppController controller
+- List<INotification> notifications
+- List<String> usersAvailable
+- List<String> usersSelected
+- String currentUser
+- void menuUsers()
+- void selectUsers(Scanner,int)
+- void processUserSelection(int)
++ void showSubscribers()
++ void showUsersAvailable()
++ List<String> getUsersSelected()
++ List<INotification> getNotifications()
++ void windowSelectCryptos()
+- void processCryptoSelection(String)
+- void selectCryptos(Scanner,int)
+- void processCryptoSelection(int)
++ void showListCryptos()
++ String getUserComboBoxString()
+}
+interface org.ull.dap.app.models.notifiers.Observable {
+~ void subscribe(IObserver)
+~ void unsubscribe(IObserver)
+~ void notifyObservers()
+}
+class org.ull.dap.app.models.connections.csv.HttpFileDownloader {
+- {static} int BUFFER_SIZE
++ {static} String downloadFromURL(String)
+}
+interface org.ull.dap.app.models.users.IObserver {
+~ void update(Asset)
+~ void addCrypto(String)
+~ void deleteCrypto(String)
+~ List<String> getNameCryptos()
+~ List<String> getMessagesToNotify()
+~ String getName()
+}
+interface org.ull.dap.app.models.connections.api.IConnectionAPI {
+~ HttpRequest buildHttpRequest(String)
+~ HttpResponse<String> sendHttpRequest(HttpRequest)
+~ Asset getAssetData(String)
+}
+class org.ull.dap.app.views.desktop.DashboardDesktop {
+- XYSeries bitcoinSeries
+- XYSeries ethereumSeries
+- DefaultPieDataset datasetPieChart
+- DefaultCategoryDataset datasetBarChart
+- void initializeUI()
+- void customizeChartAxis(JFreeChart)
+- void customizeChartRenderer(JFreeChart,Color)
++ void updateData(List<Asset>)
+}
+class org.ull.dap.app.controllers.AppController {
+- CryptocurrencyNotifier notifier
+- IView view
+- Map<IObserver,INotification> notificationsWithUsers
+- List<String> usersAvailable
+- LoginManager loginManager
+- StartManager startManager
+- CryptoActionManager cryptoActionManager
++ CryptocurrencyNotifier getNotifier()
++ void setNotifier(CryptocurrencyNotifier)
++ List<String> getUsersAvailable()
++ IView getView()
++ void setView(IView)
++ void actionPerformed(ActionEvent)
++ Map<IObserver,INotification> getNotificationsWithUsers()
+}
+class org.ull.dap.app.models.entities.Data {
+- String id
+- int rank
+- String symbol
+- String name
+- double supply
+- double maxSupply
+- double marketCapUsd
+- double volumeUsd24Hr
+- double priceUsd
+- double changePercent24Hr
+- double vwap24Hr
+- String explorer
++ String getId()
++ void setId(String)
++ int getRank()
++ void setRank(int)
++ String getSymbol()
++ void setSymbol(String)
++ String getName()
++ void setName(String)
++ double getSupply()
++ void setSupply(double)
++ double getMaxSupply()
++ void setMaxSupply(double)
++ double getMarketCapUsd()
++ void setMarketCapUsd(double)
++ double getVolumeUsd24Hr()
++ void setVolumeUsd24Hr(double)
++ double getPriceUsd()
++ void setPriceUsd(double)
++ double getChangePercent24Hr()
++ void setChangePercent24Hr(double)
++ double getVwap24Hr()
++ void setVwap24Hr(double)
++ String getExplorer()
++ void setExplorer(String)
++ String toString()
+}
+class org.ull.dap.app.models.connections.api.CryptocurrencyAPI {
+- String URI_API
++ HttpRequest buildHttpRequest(String)
++ HttpResponse<String> sendHttpRequest(HttpRequest)
++ Asset getAssetData(String)
++ String getUriAPI()
+}
+interface org.ull.dap.app.views.IView {
+~ List<String> getUsersSelected()
+~ List<INotification> getNotifications()
+~ void windowSelectCryptos()
+~ String getUserComboBoxString()
+}
+class org.ull.dap.app.models.connections.csv.CryptoParser {
+# Object convert(String,String)
+}
+class org.ull.dap.app.controllers.CryptoActionManager {
+- AppController appController
++ void handleCryptoAction(String)
+- void addCrypto(String)
+- void deleteCrypto(String)
+- void handleCryptoOperation(String,IObserver,boolean)
+}
+class org.ull.dap.app.models.entities.Asset {
+- Data data
+- String timestamp
++ Data getData()
++ void setData(Data)
++ String getTimestamp()
++ void setTimestamp(String)
++ String toString()
+}
+class org.ull.dap.app.models.connections.csv.CSVReader {
+- String header
+- String url
+- List<String> records
++ String getHeader()
++ List<String> getRecords()
++ void partialPrint(int)
++ String getUrl()
+}
+class org.ull.dap.app.models.notifiers.CryptocurrencyNotifier {
+- List<IObserver> observers
+- IConnectionAPI connectionAPI
+- List<String> namesCryptocurrencies
+- List<Asset> assets
+- {static} String CSV_CRYPTOS_PATH
+- Map<String,String> cryptoNameImage
++ void subscribe(IObserver)
++ void unsubscribe(IObserver)
++ List<IObserver> getObservers()
++ void notifyObservers()
++ List<Asset> getAssets()
++ List<String> getNamesCryptocurrencies()
++ IConnectionAPI getConnectionAPI()
++ Map<String,String> getCryptoNameImage()
+}
+class org.ull.dap.app.views.desktop.NotificationDesktop {
+- boolean changeColor
+- JPanel notificationPanel
+- JPanel titlePanel
+- JPanel footerPanel
+- JPanel cryptoPanel
+- JLabel lblTitle
+- JScrollPane scrollPaneCrypto
++ {static} String ROUTE_IMAGE_LOGO
+- void initializeUI()
+- JPanel getNotificationPanel()
+- JPanel getTitlePanel()
+- JLabel getLblTitle()
++ ImageIcon resizeIcon(ImageIcon,int,int)
+- JPanel getFooterPanel()
+- JLabel getLblFooter()
+- JScrollPane getScrollPaneCrypto()
+- JPanel getCryptoPanel()
++ void showNotification(List<String>,Map<String,String>)
++ {static} String extractNameCrypto(String)
+}
+class org.ull.dap.app.controllers.LoginManager {
+- AppController appController
++ void handleLogin()
++ void suscribeUsers(List<String>)
+}
+abstract class org.ull.dap.app.models.connections.csv.Parser {
+- List<List<Object>> data
+- String[] header
+# {abstract}Object convert(String,String)
++ List<List<Object>> getData()
++ String[] getHeader()
+}
+class org.ull.dap.app.models.users.User {
+- String name
+- long id
+- List<String> nameCryptos
+- Map<String,Double> cryptoPrices
+- List<String> messagesToNotify
++ void update(Asset)
++ List<String> getNameCryptos()
++ Map<String,Double> getCryptoPrices()
++ void addCrypto(String)
++ void deleteCrypto(String)
++ String toString()
++ int hashCode()
++ String getName()
++ List<String> getMessagesToNotify()
++ void setName(String)
++ long getId()
++ void setId(long)
++ void setNameCryptos(List<String>)
++ void setCryptoPrices(Map<String,Double>)
++ void setMessagesToNotify(List<String>)
+}
+interface org.ull.dap.app.views.INotification {
+~ void showNotification(List<String>,Map<String,String>)
+}
+
+
+org.ull.dap.app.views.INotification <|.. org.ull.dap.app.views.cli.NotificationCLI
+org.ull.dap.app.views.IView <|.. org.ull.dap.app.views.desktop.ViewDesktop
+org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.ViewDesktop
+org.ull.dap.app.views.IView <|.. org.ull.dap.app.views.cli.ViewCLI
+org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.DashboardDesktop
+java.awt.event.ActionListener <|.. org.ull.dap.app.controllers.AppController
+org.ull.dap.app.models.connections.api.IConnectionAPI <|.. org.ull.dap.app.models.connections.api.CryptocurrencyAPI
+org.ull.dap.app.models.connections.csv.Parser <|-- org.ull.dap.app.models.connections.csv.CryptoParser
+org.ull.dap.app.models.notifiers.Observable <|.. org.ull.dap.app.models.notifiers.CryptocurrencyNotifier
+org.ull.dap.app.views.INotification <|.. org.ull.dap.app.views.desktop.NotificationDesktop
+org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.NotificationDesktop
+org.ull.dap.app.models.users.IObserver <|.. org.ull.dap.app.models.users.User
+@enduml

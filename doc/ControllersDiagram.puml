@@ -1,0 +1,41 @@
+@startuml
+class org.ull.dap.app.controllers.CryptoActionManager {
+- AppController appController
++ void handleCryptoAction(String)
+- void addCrypto(String)
+- void deleteCrypto(String)
+- void handleCryptoOperation(String,IObserver,boolean)
+}
+class org.ull.dap.app.controllers.LoginManager {
+- AppController appController
++ void handleLogin()
++ void suscribeUsers(List<String>)
+}
+class org.ull.dap.app.controllers.StartManager {
+- AppController appController
+- {static} int TIME_TO_UPDATE
++ void handleStart()
+- void showError()
++ boolean checkAllUsersHaveCryptos()
++ void start()
+}
+class org.ull.dap.app.controllers.AppController {
+- CryptocurrencyNotifier notifier
+- IView view
+- Map<IObserver,INotification> notificationsWithUsers
+- List<String> usersAvailable
+- LoginManager loginManager
+- StartManager startManager
+- CryptoActionManager cryptoActionManager
++ CryptocurrencyNotifier getNotifier()
++ void setNotifier(CryptocurrencyNotifier)
++ List<String> getUsersAvailable()
++ IView getView()
++ void setView(IView)
++ void actionPerformed(ActionEvent)
++ Map<IObserver,INotification> getNotificationsWithUsers()
+}
+
+
+java.awt.event.ActionListener <|.. org.ull.dap.app.controllers.AppController
+@enduml

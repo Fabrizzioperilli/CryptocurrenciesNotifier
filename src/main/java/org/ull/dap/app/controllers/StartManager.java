@@ -1,8 +1,8 @@
 package org.ull.dap.app.controllers;
 
 import org.ull.dap.app.models.users.IObserver;
-import org.ull.dap.app.views.INotification;
-import org.ull.dap.app.views.desktop.ViewDesktop;
+import org.ull.dap.app.views.INotificationView;
+import org.ull.dap.app.views.desktop.DataViewDesktop;
 
 import javax.swing.*;
 import java.util.concurrent.Executors;
@@ -61,7 +61,7 @@ public class StartManager {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
         for (int i = 0; i < appController.getNotifier().getObservers().size(); i++) {
             IObserver user = appController.getNotifier().getObservers().get(i);
-            INotification notification = appController.getView().getNotifications().get(i);
+            INotificationView notification = appController.getView().getNotifications().get(i);
             appController.getNotificationsWithUsers().put(user, notification);
         }
         executorService.scheduleAtFixedRate(() -> {
@@ -75,8 +75,8 @@ public class StartManager {
             }
 
             appController.getNotifier().notifyObservers();
-            if (appController.getView() instanceof ViewDesktop) {
-                ((ViewDesktop) appController.getView()).getDashboardDesktop().updateData(appController.getNotifier().getAssets());
+            if (appController.getView() instanceof DataViewDesktop) {
+                ((DataViewDesktop) appController.getView()).getDashboardDesktop().updateData(appController.getNotifier().getAssets());
             }
 
             for (int i = 0; i < appController.getNotifier().getObservers().size(); i++) {

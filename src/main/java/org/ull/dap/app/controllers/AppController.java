@@ -2,8 +2,8 @@ package org.ull.dap.app.controllers;
 
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
 import org.ull.dap.app.models.users.IObserver;
-import org.ull.dap.app.views.INotification;
-import org.ull.dap.app.views.IView;
+import org.ull.dap.app.views.INotificationView;
+import org.ull.dap.app.views.IDataView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +16,9 @@ public class AppController implements ActionListener {
 
     private CryptocurrencyNotifier notifier;
 
-    private IView view;
+    private IDataView view;
 
-    private final Map<IObserver, INotification> notificationsWithUsers;
+    private final Map<IObserver, INotificationView> notificationsWithUsers;
 
     private final List<String> usersAvailable;
 
@@ -33,7 +33,7 @@ public class AppController implements ActionListener {
      * @param notifier the notifier
      * @param view     the view
      */
-    public AppController(CryptocurrencyNotifier notifier, IView view) {
+    public AppController(CryptocurrencyNotifier notifier, IDataView view) {
         this.notifier = notifier;
         this.view = view;
         this.notificationsWithUsers = new HashMap<>();
@@ -75,7 +75,7 @@ public class AppController implements ActionListener {
      *
      * @return the view
      */
-    public IView getView() {
+    public IDataView getView() {
         return view;
     }
 
@@ -84,7 +84,7 @@ public class AppController implements ActionListener {
      *
      * @param view the view
      */
-    public void setView(IView view) {
+    public void setView(IDataView view) {
         this.view = view;
     }
 
@@ -106,7 +106,7 @@ public class AppController implements ActionListener {
      *
      * @return the notifications with users
      */
-    public Map<IObserver, INotification> getNotificationsWithUsers() {
+    public Map<IObserver, INotificationView> getNotificationsWithUsers() {
         return notificationsWithUsers;
     }
 }

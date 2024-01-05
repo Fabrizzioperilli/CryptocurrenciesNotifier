@@ -1,6 +1,6 @@
 package org.ull.dap.app.views.cli;
 
-import org.ull.dap.app.views.INotification;
+import org.ull.dap.app.views.INotificationView;
 
 import java.util.List;
 import java.util.Map;
@@ -8,12 +8,12 @@ import java.util.Map;
 /**
  * The type Notification cli.
  */
-public class NotificationCLI implements INotification {
+public class NotificationCLIView implements INotificationView {
 
     /**
      * Instantiates a new Notification cli.
      */
-    public NotificationCLI() {
+    public NotificationCLIView() {
 
     }
 

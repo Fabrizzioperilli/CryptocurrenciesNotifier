@@ -13,18 +13,19 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.ull.dap.app.models.entities.Asset;
+import org.ull.dap.app.views.IDashboardView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-import static org.ull.dap.app.views.desktop.ViewDesktop.ROUTE_IMAGE_LOGO;
+import static org.ull.dap.app.views.desktop.DataViewDesktop.ROUTE_IMAGE_LOGO;
 
 /**
  * The type Dashboard desktop.
  */
-public class DashboardDesktop extends JFrame {
+public class DashboardDesktop extends JFrame implements IDashboardView {
 
     private final XYSeries bitcoinSeries;
     private final XYSeries ethereumSeries;
@@ -132,6 +133,7 @@ public class DashboardDesktop extends JFrame {
      *
      * @param assets the assets
      */
+    @Override
     public void updateData(List<Asset> assets) {
         long currentTime = System.currentTimeMillis();
         for (Asset asset : assets) {

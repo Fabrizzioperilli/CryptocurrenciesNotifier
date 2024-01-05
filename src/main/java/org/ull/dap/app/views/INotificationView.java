@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * The interface Notification.
  */
-public interface INotification {
+public interface INotificationView {
 
     /**
      * Show notification.

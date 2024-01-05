@@ -1,6 +1,6 @@
 package org.ull.dap.app.views.desktop;
 
-import org.ull.dap.app.views.INotification;
+import org.ull.dap.app.views.INotificationView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 /**
  * The type Notification desktop.
  */
-public class NotificationDesktop extends JFrame implements INotification {
+public class NotificationDesktopView extends JFrame implements INotificationView {
 
     private boolean changeColor;
     private JPanel notificationPanel;
@@ -35,7 +35,7 @@ public class NotificationDesktop extends JFrame implements INotification {
     /**
      * Instantiates a new Notification desktop.
      */
-    public NotificationDesktop() {
+    public NotificationDesktopView() {
         initializeUI();
         JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

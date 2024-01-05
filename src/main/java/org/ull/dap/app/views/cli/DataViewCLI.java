@@ -2,8 +2,8 @@ package org.ull.dap.app.views.cli;
 
 import org.ull.dap.app.controllers.AppController;
 import org.ull.dap.app.models.notifiers.CryptocurrencyNotifier;
-import org.ull.dap.app.views.INotification;
-import org.ull.dap.app.views.IView;
+import org.ull.dap.app.views.INotificationView;
+import org.ull.dap.app.views.IDataView;
 
 import java.awt.event.ActionEvent;
 
@@ -15,10 +15,10 @@ import java.util.Scanner;
 /**
  * The type View cli.
  */
-public class ViewCLI implements IView {
+public class DataViewCLI implements IDataView {
 
     private final AppController controller;
-    private final List<INotification> notifications;
+    private final List<INotificationView> notifications;
     private final List<String> usersAvailable;
     private final List<String> usersSelected;
     private String currentUser;
@@ -28,7 +28,7 @@ public class ViewCLI implements IView {
      *
      * @param model the model
      */
-    public ViewCLI(CryptocurrencyNotifier model) {
+    public DataViewCLI(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
         this.usersSelected = new ArrayList<>();
@@ -128,9 +128,9 @@ public class ViewCLI implements IView {
      * @return the notifications
      */
     @Override
-    public List<INotification> getNotifications() {
+    public List<INotificationView> getNotifications() {
         if (usersSelected != null) {
-            usersSelected.forEach(userSelected -> notifications.add(new NotificationCLI()));
+            usersSelected.forEach(userSelected -> notifications.add(new NotificationCLIView()));
         }
         return notifications;
     }
