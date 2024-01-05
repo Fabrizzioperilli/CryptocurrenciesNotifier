@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
  */
 public class CryptocurrencyAPI implements IConnectionAPI {
 
-    private final String URI_API = "https://api.coincap.io/v2/assets/";
+    private final static String URI_API = "https://api.coincap.io/v2/assets/";
 
     /**
      * Build http request http request.

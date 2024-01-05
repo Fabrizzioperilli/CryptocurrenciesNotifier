@@ -47,21 +47,6 @@ public class CSVReader {
     }
 
     /**
-     * Partial print.
-     *
-     * @param row the row
-     */
-    public void partialPrint(int row) {
-        System.out.println(header);
-        int i = 0;
-        for (String ignored : records) {
-            System.out.println(records.get(i));
-            i++;
-            if (i == row) break;
-        }
-    }
-
-    /**
      * Gets url.
      *
      * @return the url

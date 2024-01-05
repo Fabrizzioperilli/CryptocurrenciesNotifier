@@ -27,7 +27,7 @@ public class LoginManager {
     public void handleLogin() {
         List<String> usersSelected = appController.getView().getUsersSelected();
 
-        if (usersSelected.size() < 1) {
+        if (usersSelected.isEmpty()) {
             JOptionPane.showMessageDialog(null, "You must select at least 1 users", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

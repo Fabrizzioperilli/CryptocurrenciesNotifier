@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -157,7 +158,7 @@ public class NotificationDesktop extends JFrame implements INotificationView {
                 ImageIcon icon = new ImageIcon(scaledImage);
                 imageLabel.setIcon(icon);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getLogger("There is an IO error for the Stream opened in " + NotificationDesktop.class);
             }
 
             l_text.setFont(new Font("Arial", Font.BOLD, 16));

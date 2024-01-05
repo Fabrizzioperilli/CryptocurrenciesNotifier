@@ -47,7 +47,7 @@ public class StartManager {
      */
     public boolean checkAllUsersHaveCryptos() {
         for (int i = 0; i < appController.getView().getUsersSelected().size(); i++) {
-            if (appController.getNotifier().getObservers().get(i).getNameCryptos().size() < 1) {
+            if (appController.getNotifier().getObservers().get(i).getNameCryptos().isEmpty()) {
                 return false;
             }
         }

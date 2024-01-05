@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * The type View desktop.
@@ -252,7 +253,7 @@ public class DataDesktop extends JFrame implements IDataView {
             ImageIcon icon = new ImageIcon(scaledImage);
             imageLabel.setIcon(icon);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger("Error loading image");
         }
         return imageLabel;
     }
