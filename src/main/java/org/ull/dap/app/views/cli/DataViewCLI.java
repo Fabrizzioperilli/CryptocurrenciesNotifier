@@ -130,7 +130,7 @@ public class DataViewCLI implements IDataView {
     @Override
     public List<INotificationView> getNotifications() {
         if (usersSelected != null) {
-            usersSelected.forEach(userSelected -> notifications.add(new NotificationCLIView()));
+            usersSelected.forEach(userSelected -> notifications.add(new NotificationCLI()));
         }
         return notifications;
     }

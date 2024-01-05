@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 /**
  * The type Notification desktop.
  */
-public class NotificationDesktopView extends JFrame implements INotificationView {
+public class NotificationDesktop extends JFrame implements INotificationView {
 
     private boolean changeColor;
     private JPanel notificationPanel;
@@ -35,7 +35,7 @@ public class NotificationDesktopView extends JFrame implements INotificationView
     /**
      * Instantiates a new Notification desktop.
      */
-    public NotificationDesktopView() {
+    public NotificationDesktop() {
         initializeUI();
         JPanel contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

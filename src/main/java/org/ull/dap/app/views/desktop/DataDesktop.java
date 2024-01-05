@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * The type View desktop.
  */
-public class DataViewDesktop extends JFrame implements IDataView {
+public class DataDesktop extends JFrame implements IDataView {
     public static final String ROUTE_IMAGE_LOGO = "/images/logo_app.png";
     private JLabel lblTitle, lblLogo, lblUser;
     private JButton btnStart, btnLogin;
@@ -40,7 +40,7 @@ public class DataViewDesktop extends JFrame implements IDataView {
      *
      * @param model the model
      */
-    public DataViewDesktop(CryptocurrencyNotifier model) {
+    public DataDesktop(CryptocurrencyNotifier model) {
         this.controller = new AppController(model, this);
         this.notifications = new ArrayList<>();
         this.usersAvailable = controller.getUsersAvailable();
@@ -296,7 +296,7 @@ public class DataViewDesktop extends JFrame implements IDataView {
     public List<INotificationView> getNotifications() {
         if (usersSelected != null) {
             for (int i = 0; i < usersSelected.size(); i++) {
-                this.notifications.add(new NotificationDesktopView());
+                this.notifications.add(new NotificationDesktop());
             }
         }
         return notifications;

@@ -20,7 +20,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
-import static org.ull.dap.app.views.desktop.DataViewDesktop.ROUTE_IMAGE_LOGO;
+import static org.ull.dap.app.views.desktop.DataDesktop.ROUTE_IMAGE_LOGO;
 
 /**
  * The type Dashboard desktop.

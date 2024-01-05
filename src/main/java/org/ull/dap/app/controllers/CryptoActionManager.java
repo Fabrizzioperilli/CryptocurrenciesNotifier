@@ -1,7 +1,7 @@
 package org.ull.dap.app.controllers;
 
 import org.ull.dap.app.models.users.IObserver;
-import org.ull.dap.app.views.desktop.DataViewDesktop;
+import org.ull.dap.app.views.desktop.DataDesktop;
 
 /**
  * The type Crypto data manager.
@@ -59,8 +59,8 @@ public class CryptoActionManager {
                     observer.addCrypto(name);
                 }
 
-                if (appController.getView() instanceof DataViewDesktop) {
-                    ((DataViewDesktop) appController.getView()).enableButtons(name, isDelete);
+                if (appController.getView() instanceof DataDesktop) {
+                    ((DataDesktop) appController.getView()).enableButtons(name, isDelete);
                 }
             }
         }
