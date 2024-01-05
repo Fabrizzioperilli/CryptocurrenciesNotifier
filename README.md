@@ -73,4 +73,3 @@ Este comando se debe ejecutar desde la carpeta raíz del proyecto y debe tener i
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
 
-![GitHub repo size](https://img.shields.io/github/repo-size/Fabrizzioperilli/https%3A%2F%2Fgithub.com%2FFabrizzioperilli%2FCryptocurrenciesNotifier.git)
