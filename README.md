@@ -72,4 +72,6 @@ Este comando se debe ejecutar desde la carpeta raíz del proyecto y debe tener i
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
-
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
