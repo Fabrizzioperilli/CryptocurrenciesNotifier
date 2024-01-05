@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * The type Start manager.
@@ -71,7 +72,7 @@ public class StartManager {
                     appController.getNotifier().getAssets().add(appController.getNotifier().getConnectionAPI().getAssetData(nameCrypto));
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.getLogger("There is an error in the connection with the API");
             }
 
             appController.getNotifier().notifyObservers();
