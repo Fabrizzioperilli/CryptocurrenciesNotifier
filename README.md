@@ -62,3 +62,7 @@ Este comando se debe ejecutar desde la carpeta raíz del proyecto y debe tener i
 > [!IMPORTANT]
 > Asegúrate de estar conectado a internet ya que los datos se obtienen en tiempo real a través
 > de la API de [Coincap](https://coincap.io).
+
+
+> [!NOTE]
+> Para más información sobre el proyecto, consultar la documentación en el directorio /doc.
