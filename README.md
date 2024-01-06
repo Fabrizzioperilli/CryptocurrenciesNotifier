@@ -75,3 +75,10 @@ Este comando se debe ejecutar desde la carpeta raíz del proyecto y debe tener i
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Fabrizzioperilli_CryptocurrenciesNotifier&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Fabrizzioperilli_CryptocurrenciesNotifier)
+
+![GitHub License](https://img.shields.io/github/license/Fabrizzioperilli/CryptocurrenciesNotifier)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Fabrizzioperilli/CryptocurrenciesNotifier)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Fabrizzioperilli/CryptocurrenciesNotifier)
+
+
+
