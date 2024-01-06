@@ -49,7 +49,7 @@ public class NotificationDesktop extends JFrame implements INotificationView {
     private void initializeUI() {
         setTitle("Notification");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 570, 250);
+        setBounds(100, 100, 525, 297);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LOGO))).getImage());
     }
@@ -154,14 +154,14 @@ public class NotificationDesktop extends JFrame implements INotificationView {
             String nameCrypto = extractNameCrypto(message);
             try {
                 BufferedImage image = ImageIO.read(new URL(cryptoNameImage.get(nameCrypto)));
-                Image scaledImage = image.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+                Image scaledImage = image.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
                 ImageIcon icon = new ImageIcon(scaledImage);
                 imageLabel.setIcon(icon);
             } catch (IOException e) {
                 Logger.getLogger("There is an IO error for the Stream opened in " + NotificationDesktop.class);
             }
 
-            l_text.setFont(new Font("Arial", Font.BOLD, 16));
+            l_text.setFont(new Font("Helvetica", Font.BOLD, 17));
             p.add(imageLabel, BorderLayout.EAST);
             p.add(l_text, BorderLayout.CENTER);
 

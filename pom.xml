@@ -24,8 +24,8 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-<!--                    <mainClass>org.ull.dap.app.AppDesktop</mainClass>-->
-                     <mainClass>org.ull.dap.app.AppCLI</mainClass>
+                    <mainClass>org.ull.dap.app.AppDesktop</mainClass>
+<!--                     <mainClass>org.ull.dap.app.AppCLI</mainClass>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -41,8 +41,8 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.ull.dap.app.AppCLI</mainClass>
-<!--                                    <mainClass>org.ull.dap.app.AppDesktop</mainClass>-->
+<!--                                    <mainClass>org.ull.dap.app.AppCLI</mainClass>-->
+                                    <mainClass>org.ull.dap.app.AppDesktop</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>

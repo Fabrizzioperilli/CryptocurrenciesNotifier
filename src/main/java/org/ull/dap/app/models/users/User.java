@@ -2,6 +2,8 @@ package org.ull.dap.app.models.users;
 
 import org.ull.dap.app.models.entities.Asset;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -46,8 +48,14 @@ public class User implements IObserver {
         double newPrice = asset.getData().getPriceUsd();
         double percentageChange = Math.round(asset.getData().getChangePercent24Hr() * 1000.0) / 1000.0;
         cryptoPrices.put(nameCrypto, newPrice);
-        String messageNotify = "  " + name + " [" + nameCrypto + "]. New price:   " + newPrice + " USD\n" +
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        String timeAndDate = dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+
+        String messageNotify = "  " + name + " [" + nameCrypto + "].  " +  timeAndDate +
+                "\n  New price:   " + newPrice + " USD\n" +
                 "  Change percentage 24h:   " + percentageChange + "%\n";
+
         messagesToNotify.add(messageNotify);
     }
 
