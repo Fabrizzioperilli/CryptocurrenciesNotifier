@@ -2,11 +2,10 @@
 
 ## Tabla de contenidos
 
-- [1. Introducción](#Introducción)
-- [2. Descripción](#Descripción)
-- [3. Instalación](#Instalación)
-- [4. Ejecución](#Ejecución)
-- [5. Autor](#Autor)
+- [1. Introducción](##Introducción)
+- [2. Descripción](##escripción)
+- [3. Instalación](##Instalación)
+- [4. Autor](##Autor)
 
 ---
 
@@ -38,20 +37,9 @@ Para instalar el proyecto, se debe clonar el repositorio y ejecutar el siguiente
 ```bash
 git clone git@github.com:Fabrizzioperilli/CryptocurrenciesNotifier.git
 ```
----
 
-## 4. Ejecución
-
-Para ejecutar el proyecto, se debe ejecutar el siguiente comando:
-
-```bash
-mvn exec:java
-```
-
-Este comando se debe ejecutar desde la carpeta raíz del proyecto y debe tener instalado Maven. También se puede ejecutar el proyecto desde el IDE de desarrollo (IntelliJ IDEA).
 
 ---
-
 
 ## 5. Autor
 
