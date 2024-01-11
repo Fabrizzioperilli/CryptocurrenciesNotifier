@@ -1,4 +1,10 @@
 @startuml
+interface org.ull.dap.app.views.IDataView {
+~ List<String> getUsersSelected()
+~ List<INotificationView> getNotifications()
+~ void windowSelectCryptos()
+~ String getUserComboBoxString()
+}
 class org.ull.dap.app.controllers.StartManager {
 - AppController appController
 - {static} int TIME_TO_UPDATE
@@ -15,66 +21,6 @@ class org.ull.dap.app.AppCLI {
 }
 class org.ull.dap.app.views.cli.NotificationCLI {
 + void showNotification(List<String>,Map<String,String>)
-}
-class org.ull.dap.app.views.desktop.ViewDesktop {
-+ {static} String ROUTE_IMAGE_LOGO
-- JLabel lblTitle
-- JButton btnStart
-- JComboBox<String> comboBoxUsersSelected
-- JList<String> usersList
-- JPanel contentPane
-- AppController controller
-- List<String> usersSelected
-- List<String> usersAvailable
-- List<INotification> notifications
-- Map<String,JButton> addButtonMap
-- Map<String,JButton> deleteButtonMap
-- DashboardDesktop dashboardDesktop
-- void initializeUI()
-- JLabel getLblLogo()
-- JLabel getLblTitle()
-- ImageIcon resizeImage(ImageIcon,int,int)
-+ JButton getBtnLogin()
-+ JList<String> getListUsers()
-+ JPanel getPanelLogin()
-+ void windowSelectCryptos()
-- void fillComboBoxUsers()
-- JPanel getPanelSelectCrypto()
-- JScrollPane displayCryptos()
-- JPanel createItemCrypto(String,String)
-- JLabel createImageCrypto(String)
-- JLabel getLblUser()
-+ JComboBox<String> getComboBoxUsersSelected()
-+ String getUserComboBoxString()
-+ List<String> getUsersSelected()
-+ List<INotification> getNotifications()
-+ void setUsersSelected(List<String>)
-+ void setDashboardDesktop(DashboardDesktop)
-+ DashboardDesktop getDashboardDesktop()
-- JButton getBtnStart()
-+ void enableButtons(String,boolean)
-- void eventButtons()
-- void activateButtons(String)
-}
-class org.ull.dap.app.views.cli.ViewCLI {
-- AppController controller
-- List<INotification> notifications
-- List<String> usersAvailable
-- List<String> usersSelected
-- String currentUser
-- void menuUsers()
-- void selectUsers(Scanner,int)
-- void processUserSelection(int)
-+ void showSubscribers()
-+ void showUsersAvailable()
-+ List<String> getUsersSelected()
-+ List<INotification> getNotifications()
-+ void windowSelectCryptos()
-- void processCryptoSelection(String)
-- void selectCryptos(Scanner,int)
-- void processCryptoSelection(int)
-+ void showListCryptos()
-+ String getUserComboBoxString()
 }
 interface org.ull.dap.app.models.notifiers.Observable {
 ~ void subscribe(IObserver)
@@ -110,8 +56,8 @@ class org.ull.dap.app.views.desktop.DashboardDesktop {
 }
 class org.ull.dap.app.controllers.AppController {
 - CryptocurrencyNotifier notifier
-- IView view
-- Map<IObserver,INotification> notificationsWithUsers
+- IDataView view
+- Map<IObserver,INotificationView> notificationsWithUsers
 - List<String> usersAvailable
 - LoginManager loginManager
 - StartManager startManager
@@ -119,10 +65,10 @@ class org.ull.dap.app.controllers.AppController {
 + CryptocurrencyNotifier getNotifier()
 + void setNotifier(CryptocurrencyNotifier)
 + List<String> getUsersAvailable()
-+ IView getView()
-+ void setView(IView)
++ IDataView getView()
++ void setView(IDataView)
 + void actionPerformed(ActionEvent)
-+ Map<IObserver,INotification> getNotificationsWithUsers()
++ Map<IObserver,INotificationView> getNotificationsWithUsers()
 }
 class org.ull.dap.app.models.entities.Data {
 - String id
@@ -164,17 +110,14 @@ class org.ull.dap.app.models.entities.Data {
 + String toString()
 }
 class org.ull.dap.app.models.connections.api.CryptocurrencyAPI {
-- String URI_API
+- {static} String URI_API
 + HttpRequest buildHttpRequest(String)
 + HttpResponse<String> sendHttpRequest(HttpRequest)
 + Asset getAssetData(String)
 + String getUriAPI()
 }
-interface org.ull.dap.app.views.IView {
-~ List<String> getUsersSelected()
-~ List<INotification> getNotifications()
-~ void windowSelectCryptos()
-~ String getUserComboBoxString()
+interface org.ull.dap.app.views.INotificationView {
+~ void showNotification(List<String>,Map<String,String>)
 }
 class org.ull.dap.app.models.connections.csv.CryptoParser {
 # Object convert(String,String)
@@ -186,6 +129,46 @@ class org.ull.dap.app.controllers.CryptoActionManager {
 - void deleteCrypto(String)
 - void handleCryptoOperation(String,IObserver,boolean)
 }
+class org.ull.dap.app.views.desktop.DataDesktop {
++ {static} String ROUTE_IMAGE_LOGO
+- JLabel lblTitle
+- JButton btnStart
+- JComboBox<String> comboBoxUsersSelected
+- JList<String> usersList
+- JPanel contentPane
+- AppController controller
+- List<String> usersSelected
+- List<String> usersAvailable
+- Map<String,JButton> addButtonMap
+- Map<String,JButton> deleteButtonMap
+- List<INotificationView> notifications
+- IDashboardView dashboardDesktop
+- void initializeUI()
+- JLabel getLblLogo()
+- JLabel getLblTitle()
+- ImageIcon resizeImage(ImageIcon,int,int)
++ JButton getBtnLogin()
++ JList<String> getListUsers()
++ JPanel getPanelLogin()
++ void windowSelectCryptos()
+- void fillComboBoxUsers()
+- JPanel getPanelSelectCrypto()
+- JScrollPane displayCryptos()
+- JPanel createItemCrypto(String,String)
+- JLabel createImageCrypto(String)
+- JLabel getLblUser()
++ JComboBox<String> getComboBoxUsersSelected()
++ String getUserComboBoxString()
++ List<String> getUsersSelected()
++ List<INotificationView> getNotifications()
++ void setUsersSelected(List<String>)
++ void setDashboardDesktop(DashboardDesktop)
++ IDashboardView getDashboardDesktop()
+- JButton getBtnStart()
++ void enableButtons(String,boolean)
+- void eventButtons()
+- void activateButtons(String)
+}
 class org.ull.dap.app.models.entities.Asset {
 - Data data
 - String timestamp
@@ -195,13 +178,15 @@ class org.ull.dap.app.models.entities.Asset {
 + void setTimestamp(String)
 + String toString()
 }
+interface org.ull.dap.app.views.IDashboardView {
+~ void updateData(List<Asset>)
+}
 class org.ull.dap.app.models.connections.csv.CSVReader {
 - String header
 - String url
 - List<String> records
 + String getHeader()
 + List<String> getRecords()
-+ void partialPrint(int)
 + String getUrl()
 }
 class org.ull.dap.app.models.notifiers.CryptocurrencyNotifier {
@@ -275,21 +260,39 @@ class org.ull.dap.app.models.users.User {
 + void setCryptoPrices(Map<String,Double>)
 + void setMessagesToNotify(List<String>)
 }
-interface org.ull.dap.app.views.INotification {
-~ void showNotification(List<String>,Map<String,String>)
+class org.ull.dap.app.views.cli.DataViewCLI {
+- AppController controller
+- List<INotificationView> notifications
+- List<String> usersAvailable
+- List<String> usersSelected
+- String currentUser
+- void menuUsers()
+- void selectUsers(Scanner,int)
+- void processUserSelection(int)
++ void showSubscribers()
++ void showUsersAvailable()
++ List<String> getUsersSelected()
++ List<INotificationView> getNotifications()
++ void windowSelectCryptos()
+- void processCryptoSelection(String)
+- void selectCryptos(Scanner,int)
+- void processCryptoSelection(int)
++ void showListCryptos()
++ String getUserComboBoxString()
 }
 
 
-org.ull.dap.app.views.INotification <|.. org.ull.dap.app.views.cli.NotificationCLI
-org.ull.dap.app.views.IView <|.. org.ull.dap.app.views.desktop.ViewDesktop
-org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.ViewDesktop
-org.ull.dap.app.views.IView <|.. org.ull.dap.app.views.cli.ViewCLI
+org.ull.dap.app.views.INotificationView <|.. org.ull.dap.app.views.cli.NotificationCLI
+org.ull.dap.app.views.IDashboardView <|.. org.ull.dap.app.views.desktop.DashboardDesktop
 org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.DashboardDesktop
 java.awt.event.ActionListener <|.. org.ull.dap.app.controllers.AppController
 org.ull.dap.app.models.connections.api.IConnectionAPI <|.. org.ull.dap.app.models.connections.api.CryptocurrencyAPI
 org.ull.dap.app.models.connections.csv.Parser <|-- org.ull.dap.app.models.connections.csv.CryptoParser
+org.ull.dap.app.views.IDataView <|.. org.ull.dap.app.views.desktop.DataDesktop
+org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.DataDesktop
 org.ull.dap.app.models.notifiers.Observable <|.. org.ull.dap.app.models.notifiers.CryptocurrencyNotifier
-org.ull.dap.app.views.INotification <|.. org.ull.dap.app.views.desktop.NotificationDesktop
+org.ull.dap.app.views.INotificationView <|.. org.ull.dap.app.views.desktop.NotificationDesktop
 org.ull.dap.app.views.desktop.JFrame <|-- org.ull.dap.app.views.desktop.NotificationDesktop
 org.ull.dap.app.models.users.IObserver <|.. org.ull.dap.app.models.users.User
+org.ull.dap.app.views.IDataView <|.. org.ull.dap.app.views.cli.DataViewCLI
 @enduml

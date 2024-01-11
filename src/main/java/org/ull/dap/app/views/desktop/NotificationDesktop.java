@@ -49,7 +49,7 @@ public class NotificationDesktop extends JFrame implements INotificationView {
     private void initializeUI() {
         setTitle("Notification");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 525, 297);
+        setBounds(100, 100, 525, 325);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(ROUTE_IMAGE_LOGO))).getImage());
     }
@@ -161,7 +161,7 @@ public class NotificationDesktop extends JFrame implements INotificationView {
                 Logger.getLogger("There is an IO error for the Stream opened in " + NotificationDesktop.class);
             }
 
-            l_text.setFont(new Font("Helvetica", Font.BOLD, 17));
+            l_text.setFont(new Font("Helvetica", Font.BOLD, 20));
             p.add(imageLabel, BorderLayout.EAST);
             p.add(l_text, BorderLayout.CENTER);
 
